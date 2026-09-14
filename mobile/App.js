@@ -33,9 +33,8 @@ export default function App() {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" />
-
       <Text style={styles.title}>Bird ID</Text>
-
+      <Text style={styles.test}>Test</Text>
       {loading ? (
         <ActivityIndicator size="large" color="#f4b942" />
       ) : (
@@ -69,6 +68,11 @@ const styles = StyleSheet.create({
   messageError: {
     color: "#ff8a80",
     fontSize: 16,
+    textAlign: "center"
+  },
+  test: {
+    color: "#ffffff",
+    fontSize: 20,
     textAlign: "center"
   }
 });
