@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   SafeAreaView,
-  StatusBar,
   StyleSheet,
   Text,
   View,
@@ -11,6 +10,7 @@ import {
 } from "react-native";
 
 import { NavigationBar } from "expo-navigation-bar";
+import { StatusBar } from "expo-status-bar";
 
 const API_URL = "http://192.168.178.66:3000";
 
@@ -40,7 +40,7 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" />
+      <StatusBar hidden/>
 
     <View style={styles.content}>
       <View style={styles.header}>
