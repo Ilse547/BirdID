@@ -4,7 +4,8 @@ import {
   SafeAreaView,
   StatusBar,
   StyleSheet,
-  Text
+  Text,
+  View
 } from "react-native";
 
 const API_URL = "http://192.168.178.66:3000";
@@ -13,6 +14,7 @@ export default function App() {
   const [message, setMessage] = useState("Hello World");
   const [loading, setLoading] = useState(true);
   const [connected, setConnected] = useState(false);
+  const [activeTab, setActiveTab] = useState("home");
 
   useEffect(() => {
     fetch(`${API_URL}/`)
@@ -33,6 +35,8 @@ export default function App() {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" />
+
+    <View style={styles.content}>
       <Text style={styles.title}>Bird ID</Text>
       <Text style={styles.test}>Test</Text>
       {loading ? (
@@ -42,6 +46,8 @@ export default function App() {
           {message}
         </Text>
       )}
+      </View>
+      <View style={styles.bottomBar} />
     </SafeAreaView>
   );
 }
@@ -49,10 +55,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#111116",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 24
+    backgroundColor: "#111116"
   },
   title: {
     color: "#ffffff",
@@ -74,5 +77,18 @@ const styles = StyleSheet.create({
     color: "#ffffff",
     fontSize: 20,
     textAlign: "center"
-  }
+  },
+  bottomBar: {
+    width: "100%",
+    height: 80,
+    backgroundColor: "#ffffff",
+    alignSelf: "stretch"
+  },
+  content: {
+    flex: 1,
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 24
+  },
 });
