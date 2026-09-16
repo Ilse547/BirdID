@@ -5,7 +5,8 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  View
+  View,
+  Pressable
 } from "react-native";
 
 const API_URL = "http://192.168.178.66:3000";
@@ -14,7 +15,7 @@ export default function App() {
   const [message, setMessage] = useState("Hello World");
   const [loading, setLoading] = useState(true);
   const [connected, setConnected] = useState(false);
-  const [activeTab, setActiveTab] = useState("home");
+  const [activeTab, setActiveTab] = useState(null);
 
   useEffect(() => {
     fetch(`${API_URL}/`)
@@ -47,7 +48,17 @@ export default function App() {
         </Text>
       )}
       </View>
-      <View style={styles.bottomBar} />
+      <View style={styles.bottomBar}>
+        <Pressable
+          onPress={() => setActiveTab("home")}
+          style={({ pressed }) => [
+            styles.bottomButton,
+            pressed && styles.bottomButtonPressed
+          ]}
+        >
+          <Text style={styles.bottomButtonIcon}>🎙</Text>
+        </Pressable>
+      </View>
     </SafeAreaView>
   );
 }
@@ -82,7 +93,9 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 80,
     backgroundColor: "#ffffff",
-    alignSelf: "stretch"
+    alignSelf: "stretch",
+    alignItems: "center",
+    justifyContent: "center"
   },
   content: {
     flex: 1,
@@ -90,5 +103,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     paddingHorizontal: 24
+  },
+  bottomButton: {
+    width: 120,
+    height: 120 ,
+    backgroundColor: "#ff3300",
+    borderRadius: 60,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  bottomButtonPressed: {
+    backgroundColor: "#ff8566"
+  },
+  bottomButtonIcon: {
+    fontSize: 50,
+    textAlign: "center",
+    includeFontPadding: false
   },
 });
