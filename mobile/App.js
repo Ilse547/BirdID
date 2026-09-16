@@ -6,7 +6,8 @@ import {
   StyleSheet,
   Text,
   View,
-  Pressable
+  Pressable,
+  Image
 } from "react-native";
 
 import { NavigationBar } from "expo-navigation-bar";
@@ -42,16 +43,22 @@ export default function App() {
       <StatusBar barStyle="light-content" />
 
     <View style={styles.content}>
-      <Text style={styles.title}>Bird ID</Text>
-      <Text style={styles.test}>Test</Text>
-      {loading ? (
-        <ActivityIndicator size="large" color="#f4b942" />
-      ) : (
-        <Text style={connected ? styles.messageOk : styles.messageError}>
-          {message}
-        </Text>
-      )}
+      <View style={styles.header}>
+        <Image source={require("./assets/icon.png")} style={styles.appIcon}/>
+        <Text style={styles.headerTitle}>Bird ID</Text>
       </View>
+      <View style={styles.mainContent}>
+        <Text style={styles.test}>Test</Text>
+        {loading ? (
+          <ActivityIndicator size="large" color="#f4b942" />
+        ) : (
+          <Text style={connected ? styles.messageOk : styles.messageError}>
+            {message}
+          </Text>
+        )}
+      </View>
+    </View>
+
       <View style={styles.bottomBar}>
         <Pressable
           onPress={() => setActiveTab("home")}
@@ -70,7 +77,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#111116"
+    backgroundColor: "#ebfaeb",
+    width: "100%",
   },
   title: {
     color: "#ffffff",
@@ -124,4 +132,31 @@ const styles = StyleSheet.create({
     textAlign: "center",
     includeFontPadding: false
   },
+  header: {
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    paddingTop: 20,
+    paddingBottom: 20
+  },
+
+  appIcon: {
+    width: 48,
+    height: 48,
+    borderRadius: 12,
+    marginRight: 12
+  },
+
+  headerTitle: {
+    color: "#000000",
+    fontSize: 28,
+    fontWeight: "800"
+  },
+
+  mainContent: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center"
+  }
 });
