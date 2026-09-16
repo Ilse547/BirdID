@@ -17,3 +17,7 @@
 - [ ] BirdNET integration
 - [ ] result screen
 - [ ] Login and registration
+
+## run the project
+1. in the ``` backend/ ``` folder run ``` node server.js ```
+2. in the ``` mobile/ ``` folder run ``` npx expo start --lan ```
