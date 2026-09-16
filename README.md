@@ -8,4 +8,12 @@
 3. users should be able to record their sourroundings and ID birds by their chant
 4. users should be be able to share their identifications
 
+## checklist
 
+- [ ] microphone recording
+- [ ] BirdNET integration
+- [ ] Express upload route
+- [ ] mobile upload
+- [ ] BirdNET integration
+- [ ] result screen
+- [ ] Login and registration
