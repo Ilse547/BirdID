@@ -9,6 +9,8 @@ import {
   Pressable
 } from "react-native";
 
+import { NavigationBar } from "expo-navigation-bar";
+
 const API_URL = "http://192.168.178.66:3000";
 
 export default function App() {
@@ -18,6 +20,8 @@ export default function App() {
   const [activeTab, setActiveTab] = useState(null);
 
   useEffect(() => {
+    NavigationBar.setHidden(true);
+    
     fetch(`${API_URL}/`)
       .then((response) => response.json())
       .then((data) => {
