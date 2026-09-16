@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
   bottomBar: {
     width: "100%",
     height: 80,
-    backgroundColor: "#ffffff",
+    backgroundColor: "#ccffcc",
     alignSelf: "stretch",
     alignItems: "center",
     justifyContent: "center"
