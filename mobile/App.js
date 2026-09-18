@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   SafeAreaView,
-  StyleSheet,
   Text,
   View,
   Pressable,
   Image
 } from "react-native";
+
+import styles from "./styles";
 
 import { NavigationBar } from "expo-navigation-bar";
 import { StatusBar } from "expo-status-bar";
@@ -46,6 +47,16 @@ export default function App() {
       <View style={styles.header}>
         <Image source={require("./assets/icon.png")} style={styles.appIcon}/>
         <Text style={styles.headerTitle}>Bird ID</Text>
+
+        <Pressable
+          onPress={() =>
+          setActiveTab(activeTab === "help" ? "home" : "help")
+        }
+        style={({ pressed }) => [ styles.helpButton,pressed && styles.helpButtonPressed]}>
+        <Text style={styles.helpButtonText}>
+          {activeTab === "help" ? "Back" : "Help"}
+        </Text>
+      </Pressable>
       </View>
       <View style={styles.mainContent}>
         <Text style={styles.test}>Test</Text>
@@ -73,90 +84,3 @@ export default function App() {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#ebfaeb",
-    width: "100%",
-  },
-  title: {
-    color: "#ffffff",
-    fontSize: 36,
-    fontWeight: "800",
-    marginBottom: 24
-  },
-  messageOk: {
-    color: "#4caf50",
-    fontSize: 16,
-    textAlign: "center"
-  },
-  messageError: {
-    color: "#ff8a80",
-    fontSize: 16,
-    textAlign: "center"
-  },
-  test: {
-    color: "#ffffff",
-    fontSize: 20,
-    textAlign: "center"
-  },
-  bottomBar: {
-    width: "100%",
-    height: 80,
-    backgroundColor: "#ccffcc",
-    alignSelf: "stretch",
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  content: {
-    flex: 1,
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 24
-  },
-  bottomButton: {
-    width: 120,
-    height: 120 ,
-    backgroundColor: "#ff3300",
-    borderRadius: 60,
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  bottomButtonPressed: {
-    backgroundColor: "#ff8566"
-  },
-  bottomButtonIcon: {
-    fontSize: 50,
-    textAlign: "center",
-    includeFontPadding: false
-  },
-  header: {
-    width: "100%",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-start",
-    paddingTop: 20,
-    paddingBottom: 20
-  },
-
-  appIcon: {
-    width: 48,
-    height: 48,
-    borderRadius: 12,
-    marginRight: 12
-  },
-
-  headerTitle: {
-    color: "#000000",
-    fontSize: 28,
-    fontWeight: "800"
-  },
-
-  mainContent: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center"
-  }
-});
