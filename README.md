@@ -21,3 +21,23 @@
 ## run the project
 1. in the ``` backend/ ``` folder run ``` node server.js ```
 2. in the ``` mobile/ ``` folder run ``` npx expo start --lan ```
+
+cat > birdnet/README.md <<'EOF'
+# BirdNET setup
+
+BirdNET-Analyzer is used by the backend to analyse and identify birds  
+
+## Local setup
+
+Python 3.11 is required to run BirdNET-Analyzer  
+
+Run these commands to install it:  
+``` cd ~/dev/BirdID/birdnet ```
+
+``` ~/.pyenv/versions/3.11.16/bin/python -m venv .venv ```
+
+``` git clone https://github.com/birdnet-team/BirdNET-Analyzer.git ```
+
+``` cd BirdNET-Analyzer ```
+``` ../.venv/bin/python -m pip install --upgrade pip ```
+``` ../.venv/bin/python -m pip install . ```
