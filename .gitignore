@@ -21,3 +21,6 @@ Thumbs.db
 .temp/
 
 birdnet/.venv/
+birdnet/BirdNET-Analyzer/
+birdnet/test-output/
+birdnet/uploads/
