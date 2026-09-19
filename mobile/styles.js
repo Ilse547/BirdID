@@ -104,4 +104,24 @@ export default StyleSheet.create({
 		fontSize: 15,
 		fontWeight: "700"
 	},
+
+	helpScreen: {
+		flex: 1,
+		width: "100%",
+		justifyContent: "center",
+		alignItems: "center"
+	},
+
+	screenTitle: {
+		fontSize: 40,
+		fontWeight: "800",
+		marginBottom: 20
+	},
+
+	helpText: {
+		fontSize: 20,
+		lineHeight: 25,
+		textAlign: "center",
+		marginBottom: 18
+	}
 });
