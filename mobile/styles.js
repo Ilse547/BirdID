@@ -62,9 +62,13 @@ export default StyleSheet.create({
 		width: "100%",
 		flexDirection: "row",
 		alignItems: "center",
-		justifyContent: "flex-start",
+		justifyContent: "space-between",
 		paddingTop: 20,
 		paddingBottom: 20
+	},
+	headerLeft: {
+		flexDirection: "row",
+		alignItems: "center"
 	},
 	appIcon: {
 		width: 48,
@@ -83,5 +87,21 @@ export default StyleSheet.create({
 		flex: 1,
 		alignItems: "center",
 		justifyContent: "center"
-	}
+	},
+	helpButton: {
+		backgroundColor: "#f4b942",
+		paddingHorizontal: 10,
+		paddingVertical: 5,
+		borderRadius: 999
+	},
+
+	helpButtonPressed: {
+		opacity: 0.6
+	},
+
+	helpButtonText: {
+		color: "#111116",
+		fontSize: 15,
+		fontWeight: "700"
+	},
 });

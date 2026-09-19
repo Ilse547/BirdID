@@ -45,8 +45,11 @@ export default function App() {
 
     <View style={styles.content}>
       <View style={styles.header}>
-        <Image source={require("./assets/icon.png")} style={styles.appIcon}/>
-        <Text style={styles.headerTitle}>Bird ID</Text>
+
+        <View style={styles.headerLeft}>
+          <Image source={require("./assets/icon.png")} style={styles.appIcon}/>
+          <Text style={styles.headerTitle}>Bird ID</Text>
+        </View>
 
         <Pressable
           onPress={() =>
@@ -57,6 +60,7 @@ export default function App() {
           {activeTab === "help" ? "Back" : "Help"}
         </Text>
       </Pressable>
+      
       </View>
       <View style={styles.mainContent}>
         <Text style={styles.test}>Test</Text>
