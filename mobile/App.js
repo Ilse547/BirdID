@@ -8,6 +8,7 @@ import {
   Image
 } from "react-native";
 
+import HelpScreen from "./pages/Helppage";
 import styles from "./styles";
 
 import { NavigationBar } from "expo-navigation-bar";
@@ -62,15 +63,21 @@ export default function App() {
       </Pressable>
       
       </View>
-      <View style={styles.mainContent}>
-        <Text style={styles.test}>Test</Text>
-        {loading ? (
-          <ActivityIndicator size="large" color="#f4b942" />
-        ) : (
-          <Text style={connected ? styles.messageOk : styles.messageError}>
-            {message}
-          </Text>
-        )}
+        <View style={styles.mainContent}>
+          {activeTab === "help" ? (
+            <HelpScreen />
+            ) : (
+              <>
+                <Text style={styles.test}>Test</Text>
+                {loading ? (
+                  <ActivityIndicator size="large" color="#000000" />
+                  ) : (
+                <Text style={connected ? styles.messageOk : styles.messageError}>
+                  {message}
+                </Text>
+              )}
+            </>
+          )}
       </View>
     </View>
 
