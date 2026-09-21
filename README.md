@@ -22,7 +22,11 @@
 1. in the ``` backend/ ``` folder run ``` node server.js ```
 2. in the ``` mobile/ ``` folder run ``` npx expo start --lan ```
 
-cat > birdnet/README.md <<'EOF'
+## Compiklw into apk
+1. inside of ``` mobile/ ``` run ``` npx expo prebuild --platform android ```  
+2. inside of ``` mobile/android ``` run ``` ./gradlew clean ``` to remove old build files  
+3. then run ``` ./gradlew assembleRelease ``` to build the apk  
+
 # BirdNET setup
 
 BirdNET-Analyzer is used by the backend to analyse and identify birds  
