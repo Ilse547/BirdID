@@ -123,5 +123,11 @@ export default StyleSheet.create({
 		lineHeight: 25,
 		textAlign: "center",
 		marginBottom: 18
-	}
+	},
+	backButton: {
+		backgroundColor: "#f4b942",
+		paddingHorizontal: 10,
+		paddingVertical: 5,
+		borderRadius: 999
+	},
 });
