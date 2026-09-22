@@ -9,7 +9,9 @@ import {
 } from "react-native";
 
 import HelpScreen from "./pages/Helppage";
+import RecordingPage from "./pages/Recordingpage";
 import styles from "./styles";
+
 
 import { NavigationBar } from "expo-navigation-bar";
 import { StatusBar } from "expo-status-bar";
@@ -21,6 +23,7 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [connected, setConnected] = useState(false);
   const [activeTab, setActiveTab] = useState(null);
+  const [screen, setScreen] = useState("home");
 
   useEffect(() => {
     NavigationBar.setHidden(true);
@@ -66,24 +69,17 @@ export default function App() {
         <View style={styles.mainContent}>
           {activeTab === "help" ? (
             <HelpScreen />
-            ) : (
-              <>
-                <Text style={styles.test}>Test</Text>
-                {loading ? (
-                  <ActivityIndicator size="large" color="#000000" />
-                  ) : (
-                <Text style={connected ? styles.messageOk : styles.messageError}>
-                  {message}
-                </Text>
-              )}
-            </>
+          ) : screen === "recording" ? (
+            <RecordingPage onBack={() => setScreen("home")} />
+          ) : (
+            <Text>Home Screen</Text>
           )}
-      </View>
+        </View>
     </View>
 
       <View style={styles.bottomBar}>
         <Pressable
-          onPress={() => setActiveTab("home")}
+          onPress={() => setScreen("recording")}
           style={({ pressed }) => [
             styles.bottomButton,
             pressed && styles.bottomButtonPressed
