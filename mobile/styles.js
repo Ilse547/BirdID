@@ -130,4 +130,68 @@ export default StyleSheet.create({
 		paddingVertical: 5,
 		borderRadius: 999
 	},
+	recordingScreen: {
+		flex: 1,
+		width: "100%",
+		alignItems: "center",
+		paddingTop: 24
+	},
+	screenTitle: {
+		color: "#ffffff",
+		fontSize: 28,
+		fontWeight: "800",
+		marginBottom: 24
+	},
+	recordingStatus: {
+		color: "#ffffff",
+		fontSize: 18,
+		marginBottom: 16
+	},
+	recordingTimer: {
+		color: "#f4b942",
+		fontSize: 40,
+		fontWeight: "700",
+		marginBottom: 32
+	},
+	recordButton: {
+		backgroundColor: "#f4b942",
+		paddingVertical: 16,
+		paddingHorizontal: 28,
+		borderRadius: 10,
+		marginBottom: 20
+	},
+	recordButtonText: {
+		color: "#111116",
+		fontSize: 16,
+		fontWeight: "700"
+	},
+	stopButton: {
+		backgroundColor: "#d9534f",
+		paddingVertical: 16,
+		paddingHorizontal: 28,
+		borderRadius: 10,
+		marginBottom: 20
+	},
+	stopButtonText: {
+		color: "#ffffff",
+		fontSize: 16,
+		fontWeight: "700"
+	},
+	recordingError: {
+		color: "#ff8a80",
+		fontSize: 15,
+		textAlign: "center",
+		marginBottom: 16
+	},
+	backButton: {
+		backgroundColor: "#444444",
+		paddingVertical: 12,
+		paddingHorizontal: 24,
+		borderRadius: 8
+	},
+	backButtonText: {
+		color: "#ffffff",
+		fontSize: 16,
+		fontWeight: "600"
+	},
 });
