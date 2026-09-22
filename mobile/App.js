@@ -70,7 +70,10 @@ export default function App() {
           {activeTab === "help" ? (
             <HelpScreen />
           ) : screen === "recording" ? (
-            <RecordingPage onBack={() => setScreen("home")} />
+            <RecordingPage onBack={() => { 
+              setActiveTab(null);
+              setScreen("home");
+            }} />
           ) : (
             <Text>Home Screen</Text>
           )}
