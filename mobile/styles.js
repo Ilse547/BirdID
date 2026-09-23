@@ -111,13 +111,6 @@ export default StyleSheet.create({
 		justifyContent: "center",
 		alignItems: "center"
 	},
-
-	screenTitle: {
-		fontSize: 40,
-		fontWeight: "800",
-		marginBottom: 20
-	},
-
 	helpText: {
 		fontSize: 20,
 		lineHeight: 25,
@@ -183,15 +176,40 @@ export default StyleSheet.create({
 		textAlign: "center",
 		marginBottom: 16
 	},
-	backButton: {
-		backgroundColor: "#444444",
-		paddingVertical: 12,
-		paddingHorizontal: 24,
-		borderRadius: 8
-	},
 	backButtonText: {
 		color: "#ffffff",
 		fontSize: 16,
 		fontWeight: "600"
 	},
+	playButton: {
+		backgroundColor: "#4caf50",
+		paddingVertical: 14,
+		paddingHorizontal: 24,
+		borderRadius: 8,
+		marginBottom: 12
+	},
+	playButtonText: {
+		color: "#ffffff",
+		fontSize: 16,
+		fontWeight: "700"
+	},
+	replayButton: {
+		backgroundColor: "#555555",
+		paddingVertical: 12,
+		paddingHorizontal: 20,
+		borderRadius: 8,
+		marginBottom: 20
+	},
+	replayButtonText: {
+		color: "#ffffff",
+		fontSize: 15,
+		fontWeight: "600"
+	},
+	recordingUri: {
+		color: "#333333",
+		fontSize: 12,
+		textAlign: "center",
+		marginHorizontal: 20,
+		marginBottom: 20
+	}
 });

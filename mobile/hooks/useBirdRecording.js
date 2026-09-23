@@ -11,9 +11,11 @@ export default function useBirdRecording() {
     const audioRecorder = useAudioRecorder( {...RecordingPresets.HIGH_QUALITY, directory: "document"});
     const recorderState = useAudioRecorderState(audioRecorder);
     const [error, setError] = useState(null);
+    const [recordingUri, setRecordingUri] = useState(null);
     const startRecording = async () => {
         try {
             setError(null);
+            setRecordingUri(null);
             const permission = await AudioModule.requestRecordingPermissionsAsync();
             if(!permission.granted) {
                 setError("Microphone permission declined");
@@ -38,7 +40,9 @@ export default function useBirdRecording() {
                 return null;
             }
             await audioRecorder.stop();
-            return audioRecorder.uri;
+            const uri = audioRecorder.uri;
+            setRecordingUri(uri);
+            return uri;
         } catch (recordingError) {
             console.error(recordingError);
             setError("Could not stop recording");
@@ -48,7 +52,7 @@ export default function useBirdRecording() {
     return {
         isRecording: recorderState.isRecording,
         durationMillis: recorderState.durationMillis,
-        recordingUri: audioRecorder.uri,
+        recordingUri,
         error,
         startRecording,
         stopRecording
