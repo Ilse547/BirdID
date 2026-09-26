@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 const multer = require("multer");
+const { analyzeAudio } = require("./services/birdnetService");
 
 const app = express();
 const PORT = 3000;
@@ -14,25 +15,24 @@ if(!fs.existsSync(uploadDirectory)) {
 }
 const upload = multer({ dest: uploadDirectory});
 
-app.get("/", (req, res) => {
-  res.json({
-    message: "Hello from the backend"
-  });
-});
+app.post("/upload", upload.single("audio"), async (req, res) => {
 
-app.post("/upload", upload.single("audio"), (req, res) => {
-  if(!req.file) {
-    return res.status(400).json({
-      error: "No audio file uploaded"
-    });
+  if (!req.file) {
+    return res.status(400).json({ error: "no audio wsa uploaded" });
   }
-  res.json({
-    message: "audio uploadedd",
-    filename: req.file.filename,
-    path: req.file.path,
-    originalName: req.file.originalname
-  });
-});
+  console.log("Upload received:", req.file.originalname);
+  try {
+    const birdnetResults = await analyzeAudio( req.file.path, req.file.originalname );
+    console.log("BirdNET finished");
+    res.json({ message: "audio analyzed", results: birdnetResults });
+
+  } catch (error) {
+
+    console.error(error);
+    res.status(500).json({ error: "BirdNET failed" });
+  }
+
+}); 
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Backend running at http://localhost:${PORT}`);
