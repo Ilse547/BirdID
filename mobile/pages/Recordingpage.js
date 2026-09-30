@@ -8,7 +8,7 @@ import styles from "../styles";
 import useBirdRecording from "../hooks/useBirdRecording";
 const API_URL = "http://192.168.178.66:3000";
 
-export default function Recordingpage({ onBack }) {
+export default function Recordingpage({ onBack, onResults }) {
   const {
     isRecording,
     durationMillis,
@@ -23,7 +23,7 @@ export default function Recordingpage({ onBack }) {
   const player = useAudioPlayer();
   const playerStatus = useAudioPlayerStatus(player);
   const [uploadMessage, setUploadMessage] = useState("");
-  const [birdnetResults, setBirdnetResults] = useState("");
+  const [birdnetResults, setBirdnetResults] = useState([]);
 
   useEffect(() => {
     if(recordingUri) {
@@ -81,6 +81,7 @@ const handleUpload = async () => {
     }
     console.log(data);
     setBirdnetResults(data.results);
+    onResults(data.results);
     setUploadMessage("Upload successfuk");
   } catch(uploadError) {
     console.error(uploadError);
@@ -145,11 +146,15 @@ const handleUpload = async () => {
           {uploadMessage !== "" && (
             <Text >{uploadMessage}</Text>
           )}
-          {birdnetResults !== "" && (
-          <Text style={styles.birdnetResults}>
-            {birdnetResults}
-          </Text>
-        )}
+          {birdnetResults.length > 0 && (
+            <View style={styles.birdnetResults}>
+              {birdnetResults.map((result, index) => (
+                <Text key={index}>
+                  {result[3]} — {(Number(result[6]) * 100).toFixed(1)}%
+                </Text>
+              ))}
+            </View>
+          )}
         </>
       )}
       <Pressable style={styles.backButton} onPress={onBack}>

@@ -10,6 +10,7 @@ import {
 
 import HelpScreen from "./pages/Helppage";
 import RecordingPage from "./pages/Recordingpage";
+import ResultPage from "./pages/ResultPage.js";
 import styles from "./styles";
 
 
@@ -24,6 +25,7 @@ export default function App() {
   const [connected, setConnected] = useState(false);
   const [activeTab, setActiveTab] = useState(null);
   const [screen, setScreen] = useState("home");
+  const [birdnetResults, setBirdnetResults] = useState([]);
 
   useEffect(() => {
     NavigationBar.setHidden(true);
@@ -69,11 +71,22 @@ export default function App() {
         <View style={styles.mainContent}>
           {activeTab === "help" ? (
             <HelpScreen />
+            ) : screen === "results" ? (
+            <ResultPage
+              results={birdnetResults}
+              onBack={() => setScreen("recording")}
+            />
           ) : screen === "recording" ? (
-            <RecordingPage onBack={() => { 
+          <RecordingPage
+            onResults={(results) => {
+              setBirdnetResults(results);
+              setScreen("results");
+            }}
+            onBack={() => {
               setActiveTab(null);
               setScreen("home");
-            }} />
+            }}
+          />
           ) : (
             <Text>Home Screen</Text>
           )}
