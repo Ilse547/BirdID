@@ -23,6 +23,7 @@ export default function Recordingpage({ onBack }) {
   const player = useAudioPlayer();
   const playerStatus = useAudioPlayerStatus(player);
   const [uploadMessage, setUploadMessage] = useState("");
+  const [birdnetResults, setBirdnetResults] = useState("");
 
   useEffect(() => {
     if(recordingUri) {
@@ -79,6 +80,7 @@ const handleUpload = async () => {
       throw new Error(data.error || "upload failed");
     }
     console.log(data);
+    setBirdnetResults(data.results);
     setUploadMessage("Upload successfuk");
   } catch(uploadError) {
     console.error(uploadError);
@@ -143,6 +145,11 @@ const handleUpload = async () => {
           {uploadMessage !== "" && (
             <Text >{uploadMessage}</Text>
           )}
+          {birdnetResults !== "" && (
+          <Text style={styles.birdnetResults}>
+            {birdnetResults}
+          </Text>
+        )}
         </>
       )}
       <Pressable style={styles.backButton} onPress={onBack}>
