@@ -211,5 +211,13 @@ export default StyleSheet.create({
 		textAlign: "center",
 		marginHorizontal: 20,
 		marginBottom: 20
+	},
+	confident : {
+		color: "#17b348",
+		fontSize: 25
+	},
+	nconfident : {
+		color: "#ed4f2f",
+		fontSize: 25
 	}
 });
