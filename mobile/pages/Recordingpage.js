@@ -120,11 +120,6 @@ const handleUpload = async () => {
         </Text>
       )}
       {recordingUri && !isRecording && (
-        <Text numberOfLines={3}>
-          {recordingUri}
-        </Text>
-      )}
-      {recordingUri && !isRecording && (
         <>
           <Pressable style={styles.playButton} onPress={handlePlayPause} >
             <Text style={styles.playButtonText}>
