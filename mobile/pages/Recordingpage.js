@@ -8,7 +8,7 @@ import styles from "../styles";
 import useBirdRecording from "../hooks/useBirdRecording";
 const API_URL = "http://192.168.178.66:3000";
 
-export default function Recordingpage({ onBack, onResults }) {
+export default function Recordingpage({ onBack, onResults, autoStart }) {
   const {
     isRecording,
     durationMillis,
@@ -30,6 +30,11 @@ export default function Recordingpage({ onBack, onResults }) {
       player.replace({ uri : recordingUri});
     }
   }, [recordingUri, player]);
+  useEffect(() => {
+  if (autoStart) {
+    startRecording();
+  }
+}, [autoStart]);
 
   const handleBack = async () => {
     if (isRecording) {
@@ -102,17 +107,10 @@ const handleUpload = async () => {
         <Text style={styles.recordingTimer}>
           {minutes}:{seconds}
         </Text>
-
-        {isRecording ? (
-        <Pressable style={styles.stopButton} onPress={stopRecording} >
+        {isRecording && (
+        <Pressable style={styles.stopButton} onPress={stopRecording}>
           <Text style={styles.stopButtonText}>
             Stop recording
-          </Text>
-        </Pressable>
-      ) : (
-        <Pressable style={styles.recordButton} onPress={startRecording} >
-          <Text style={styles.recordButtonText}>
-            Start recording
           </Text>
         </Pressable>
       )}

@@ -26,6 +26,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState(null);
   const [screen, setScreen] = useState("home");
   const [birdnetResults, setBirdnetResults] = useState([]);
+  const [autoStartRecording, setAutoStartRecording] = useState(false);
 
   useEffect(() => {
     NavigationBar.setHidden(true);
@@ -77,12 +78,13 @@ export default function App() {
               onBack={() => setScreen("recording")}
             />
           ) : screen === "recording" ? (
-          <RecordingPage
-            onResults={(results) => {
+          <RecordingPage autoStart={autoStartRecording} onResults={(results) => {
+              setAutoStartRecording(false);;
               setBirdnetResults(results);
               setScreen("results");
             }}
             onBack={() => {
+              setAutoStartRecording(false);
               setActiveTab(null);
               setScreen("home");
             }}
@@ -95,7 +97,7 @@ export default function App() {
 
       <View style={styles.bottomBar}>
         <Pressable
-          onPress={() => setScreen("recording")}
+          onPress={() => {setAutoStartRecording(true); setScreen("recording"); }}
           style={({ pressed }) => [
             styles.bottomButton,
             pressed && styles.bottomButtonPressed
