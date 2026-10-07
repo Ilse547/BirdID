@@ -3,6 +3,7 @@ const path = require("path");
 const fs = require("fs");
 const multer = require("multer");
 const { analyzeAudio } = require("./services/birdnetService");
+const db = require("./db/database");
 
 const app = express();
 const PORT = 3000;
@@ -23,6 +24,21 @@ app.post("/upload", upload.single("audio"), async (req, res) => {
   console.log("Upload received:", req.file.originalname);
   try {
     const birdnetResults = await analyzeAudio( req.file.path, req.file.originalname );
+
+    const recordingResult = await db.query(
+      `INSERT INTO recordings (original_name, stored_path)
+      VALUES ($1, $2)
+      RETURNING id`,
+      [req.file.originalname, req.file.path]
+    );
+    const recordingId = recordingResult.rows[0].id;
+    for (const result of birdnetResults) {
+      await db.query(
+        `INSERT INTO identification_results
+        (recording_id, common_name, scientific_name, confidence, start_seconds, end_seconds)
+        VALUES ($1, $2, $3, $4, $5, $6)`,
+        [ recordingId, result[3], result[4], Number(result[6]), Number(result[1]), Number(result[2]) ]);
+    }
     console.log("BirdNET finished");
     res.json({ message: "audio analyzed", results: birdnetResults });
 

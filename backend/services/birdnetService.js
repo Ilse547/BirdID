@@ -47,7 +47,7 @@ await execFileAsync("ffmpeg", [
   }
   const result = await fs.readFile( path.join(outputDirectory, resultFile), "utf8");
   await fs.rm(runDirectory, { recursive: true, force: true});
-  return result;
+  return result.split("\n").slice(1).filter((line) => line.trim() !== "").map((line) => line.split("\t"));
 }
 
 module.exports = { analyzeAudio };
