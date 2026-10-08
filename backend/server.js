@@ -4,11 +4,13 @@ const fs = require("fs");
 const multer = require("multer");
 const { analyzeAudio } = require("./services/birdnetService");
 const db = require("./db/database");
+const authRoutes = require("./routes/authRoutes");
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use("/auth", authRoutes);
 
 const uploadDirectory = path.join(__dirname, 'upload');
 if(!fs.existsSync(uploadDirectory)) {
