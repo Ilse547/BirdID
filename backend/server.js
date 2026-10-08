@@ -5,6 +5,7 @@ const multer = require("multer");
 const { analyzeAudio } = require("./services/birdnetService");
 const db = require("./db/database");
 const authRoutes = require("./routes/authRoutes");
+const authenticateToken = require("./middleware/authMid")
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -18,7 +19,7 @@ if(!fs.existsSync(uploadDirectory)) {
 }
 const upload = multer({ dest: uploadDirectory});
 
-app.post("/upload", upload.single("audio"), async (req, res) => {
+app.post("/upload", authenticateToken, upload.single("audio"), async (req, res) => {
 
   if (!req.file) {
     return res.status(400).json({ error: "no audio wsa uploaded" });
