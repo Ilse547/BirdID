@@ -24,3 +24,5 @@ birdnet/.venv/
 birdnet/BirdNET-Analyzer/
 birdnet/test-output/
 backend/upload
+
+backend/.env
