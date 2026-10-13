@@ -12,7 +12,8 @@ import HelpScreen from "./pages/Helppage";
 import RecordingPage from "./pages/Recordingpage";
 import ResultPage from "./pages/ResultPage.js";
 import styles from "./styles";
-
+import LoginPage from "./pages/Loginpage";
+import RegisterPage from "./pages/Registerpage";
 
 import { NavigationBar } from "expo-navigation-bar";
 import { StatusBar } from "expo-status-bar";
@@ -27,6 +28,49 @@ export default function App() {
   const [screen, setScreen] = useState("home");
   const [birdnetResults, setBirdnetResults] = useState([]);
   const [autoStartRecording, setAutoStartRecording] = useState(false);
+
+  const [authScreen, setAuthScreen] = useState("login");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+
+  const [token, setToken] = useState(null);
+  const [authMessage, setAuthMessage] = useState("");
+
+  const handleLogin = async () => {
+    try{
+      const response = await fetch(`${API_URL}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json"},
+        body: JSON.stringify({email, password})
+      });
+      const data = await response.json();
+      if(!response.ok) {
+        throw new Error(data.error);
+      }
+      setToken(data.token);
+      setAuthScreen(null);
+    } catch {
+      setAuthMessage("log in faILED");
+    }
+  };
+  const handleRegister = async () => {
+    try {
+      const response = await fetch(`${API_URL}/auth/register`, {
+        method: "POST",
+        headers: { "Content-Type" : "application/json"},
+        body: JSON.stringify({username, email, password })
+      });
+      const data = await response.json();
+      if(!response.ok) {
+        throw new Error(data.error);
+      }
+      setAuthMessage("registration successful");
+      setAuthScreen("login");
+    } catch {
+      setAuthMessage("registration failed :(");
+    }
+  };
 
   useEffect(() => {
     NavigationBar.setHidden(true);
@@ -67,34 +111,35 @@ export default function App() {
           {activeTab === "help" ? "Back" : "Help"}
         </Text>
       </Pressable>
-      
-      </View>
-        <View style={styles.mainContent}>
-          {activeTab === "help" ? (
-            <HelpScreen />
-            ) : screen === "results" ? (
-            <ResultPage
-              results={birdnetResults}
-              onBack={() => setScreen("recording")}
-            />
-          ) : screen === "recording" ? (
-          <RecordingPage autoStart={autoStartRecording} onResults={(results) => {
-              setAutoStartRecording(false);;
-              setBirdnetResults(results);
-              setScreen("results");
-            }}
-            onBack={() => {
-              setAutoStartRecording(false);
-              setActiveTab(null);
-              setScreen("home");
-            }}
-          />
-          ) : (
-            <Text>Home Screen</Text>
-          )}
         </View>
-    </View>
-
+          <View style={styles.mainContent}>
+            {authScreen === "login" ? (
+              <LoginPage onLogin={{setEmail, setPassword, submit: handleLogin }} onRegister={() => setAuthScreen("register")}/>
+            ) : authScreen === "register" ? (
+              <RegisterPage onRegister={{ setUsername, setEmail, setPassword, submit: handleRegister }} onBack={() => setAuthScreen("login")} />
+            ) : activeTab === "help" ? (
+              <HelpScreen/>
+            ) : screen === "results" ? (
+              <ResultPage results={birdnetResults} onBack={() => setScreen("recording")} />
+            ) : screen === "recording" ? (
+              <RecordingPage
+                autoStart={autoStartRecording}
+                onResults={(results) => {
+                  setAutoStartRecording(false);
+                  setBirdnetResults(results);
+                  setScreen("results");
+                }}
+                onBack={() => {
+                  setAutoStartRecording(false);
+                  setActiveTab(null);
+                  setScreen("home");
+                }}
+              />
+            ) : (
+              <Text>Home Screen</Text>
+            )}
+          </View>
+        </View>
       <View style={styles.bottomBar}>
         <Pressable
           onPress={() => {setAutoStartRecording(true); setScreen("recording"); }}
