@@ -1,19 +1,20 @@
 import { Pressable, Text, TextInput, View } from "react-native";
+import styles from "../styles";
 
 export default function LoginPage({ onLogin, onRegister }) {
   return (
-    <View>
-      <Text>login page</Text>
+    <View style={styles.authContainer}>
+      <Text style={styles.authTitle}>login page</Text>
 
-      <TextInput placeholder="email" autoCapitalize="none" keyboardType="email-address" onChangeText={onLogin.setEmail}/>
-      <TextInput placeholder="passwrd" secureTextEntry onChangeText={onLogin.setPassword} />
+      <TextInput style={styles.inputBox} placeholder="email" autoCapitalize="none" keyboardType="email-address" onChangeText={onLogin.setEmail}/>
+      <TextInput style={styles.inputBox} placeholder="passwrd" secureTextEntry onChangeText={onLogin.setPassword} />
 
-      <Pressable onPress={onLogin.submit}>
-        <Text>log in</Text>
+      <Pressable style={styles.authButton} onPress={onLogin.submit}>
+        <Text style={styles.authButtonText}>log in</Text>
       </Pressable>
 
       <Pressable onPress={onRegister}>
-        <Text>create your account</Text>
+        <Text style={{ color: "#0062ff", fontSize: 18}}>create your account</Text>
       </Pressable>
     </View>
   );

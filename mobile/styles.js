@@ -219,5 +219,41 @@ export default StyleSheet.create({
 	nconfident : {
 		color: "#ed4f2f",
 		fontSize: 25
+	},
+	authContainer: {
+		flex: 1,
+		alignItems: "center",
+		justifyContent: "center",
+		padding: 20,
+	},
+	authTitle: {
+		fontSize: 28,
+		fontWeight: "bold",
+		marginBottom: 20,
+	},
+	inputBox: {
+		width: 200,
+		height: 50,
+		borderWidth: 1,
+		borderColor: "#999",
+		borderRadius: 8,
+		padding: 12,
+		marginVertical: 6,
+		backgroundColor: "#fff",
+	},
+	authButton: {
+		width: 200,
+		height: 50,
+		backgroundColor: "#ff0000",
+		padding: 14,
+		borderRadius: 8,
+		marginTop: 12,
+		alignItems: "center",
+		marginBottom: 20,
+	},
+	authButtonText: {
+		color: "#fff",
+		fontWeight: "bold",
+		fontSize: 16,
 	}
 });
