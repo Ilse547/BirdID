@@ -8,7 +8,7 @@ import styles from "../styles";
 import useBirdRecording from "../hooks/useBirdRecording";
 const API_URL = "http://192.168.178.66:3000";
 
-export default function Recordingpage({ onBack, onResults, autoStart }) {
+export default function Recordingpage({ onBack, onResults, autoStart, token}) {
   const {
     isRecording,
     durationMillis,
@@ -78,6 +78,7 @@ const handleUpload = async () => {
     formData.append("audio", file);
     const response = await expoFetch(`${API_URL}/upload`, {
       method: 'POST',
+      headers: { Authorization: `Bearer ${token}`},
       body: formData
     });
     const data = await response.json();

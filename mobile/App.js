@@ -123,6 +123,7 @@ export default function App() {
               <ResultPage results={birdnetResults} onBack={() => setScreen("recording")} />
             ) : screen === "recording" ? (
               <RecordingPage
+                token={token}
                 autoStart={autoStartRecording}
                 onResults={(results) => {
                   setAutoStartRecording(false);
