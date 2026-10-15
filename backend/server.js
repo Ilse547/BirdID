@@ -51,7 +51,32 @@ app.post("/upload", authenticateToken, upload.single("audio"), async (req, res) 
     res.status(500).json({ error: "BirdNET failed" });
   }
 
-}); 
+});
+app.get("/recording/me", authenticateToken, async (req, res) => {
+  try {
+    const result = await db.query(
+      `SELECT
+         r.id,
+         r.original_name,
+         r.created_at,
+         ir.common_name,
+         ir.scientific_name,
+         ir.confidence,
+         ir.start_seconds,
+         ir.end_seconds
+       FROM recordings r
+       LEFT JOIN identification_results ir
+         ON ir.recording_id = r.id
+       WHERE r.user_id = $1
+       ORDER BY r.created_at DESC`,
+      [req.user.userId]
+    );
+    res.json({ recordings: result.rows });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "not able to load recoridngs" });
+  }
+});
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Backend running at http://localhost:${PORT}`);
