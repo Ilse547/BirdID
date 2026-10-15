@@ -55,6 +55,19 @@ export default function App() {
     }
   };
   const handleRegister = async () => {
+    if (!username || !email || !password) {
+      setAuthMessage("all fields must be complete");
+      return;
+    }
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+      setAuthMessage("emial format is invalid");
+      return;
+    }
+    if (password.length < 8) {
+      setAuthMessage("password needs to be at least 8 characters long");
+      return;
+    }
     try {
       const response = await fetch(`${API_URL}/auth/register`, {
         method: "POST",
