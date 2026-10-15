@@ -29,10 +29,10 @@ app.post("/upload", authenticateToken, upload.single("audio"), async (req, res) 
     const birdnetResults = await analyzeAudio( req.file.path, req.file.originalname );
 
     const recordingResult = await db.query(
-      `INSERT INTO recordings (original_name, stored_path)
-      VALUES ($1, $2)
+      `INSERT INTO recordings (user_id, original_name, stored_path)
+      VALUES ($1, $2, $3)
       RETURNING id`,
-      [req.file.originalname, req.file.path]
+      [req.user.userId, req.file.originalname, req.file.path]
     );
     const recordingId = recordingResult.rows[0].id;
     for (const result of birdnetResults) {
