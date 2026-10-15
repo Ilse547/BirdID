@@ -50,8 +50,8 @@ export default function App() {
       }
       setToken(data.token);
       setAuthScreen(null);
-    } catch {
-      setAuthMessage("log in faILED");
+    } catch(error) {
+      setAuthMessage(error.message);
     }
   };
   const handleRegister = async () => {
@@ -67,8 +67,8 @@ export default function App() {
       }
       setAuthMessage("registration successful");
       setAuthScreen("login");
-    } catch {
-      setAuthMessage("registration failed :(");
+    } catch (error) {
+      setAuthMessage(error.message);
     }
   };
 
@@ -114,9 +114,9 @@ export default function App() {
         </View>
           <View style={styles.mainContent}>
             {authScreen === "login" ? (
-              <LoginPage onLogin={{setEmail, setPassword, submit: handleLogin }} onRegister={() => setAuthScreen("register")}/>
+              <LoginPage message={authMessage} onLogin={{setEmail, setPassword, submit: handleLogin }} onRegister={() => setAuthScreen("register")}/>
             ) : authScreen === "register" ? (
-              <RegisterPage onRegister={{ setUsername, setEmail, setPassword, submit: handleRegister }} onBack={() => setAuthScreen("login")} />
+              <RegisterPage message={authMessage} onRegister={{ setUsername, setEmail, setPassword, submit: handleRegister }} onBack={() => setAuthScreen("login")} />
             ) : activeTab === "help" ? (
               <HelpScreen/>
             ) : screen === "results" ? (

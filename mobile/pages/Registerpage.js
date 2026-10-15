@@ -1,7 +1,7 @@
 import { Pressable, Text, TextInput, View } from "react-native";
 import styles from "../styles";
 
-export default function RegisterPage({ onRegister, onBack }) {
+export default function RegisterPage({ onRegister, onBack, message }) {
   return (
     <View style={styles.authContainer}>
       <Text style={styles.authTitle}>create account page</Text>
@@ -10,7 +10,11 @@ export default function RegisterPage({ onRegister, onBack }) {
       <TextInput style={styles.inputBox} placeholder="your email" autoCapitalize="none" keyboardType="email-address" onChangeText={onRegister.setEmail} />
 
       <TextInput style={styles.inputBox} placeholder="password" secureTextEntry onChangeText={onRegister.setPassword} />
-
+      {message !== "" && (
+        <Text style={{ color: "#d62828", marginTop: 10 }}>
+          {message}
+        </Text>
+      )}
       <Pressable style={styles.authButton} onPress={onRegister.submit}>
         <Text style={styles.authButtonText}>register</Text>
       </Pressable>
