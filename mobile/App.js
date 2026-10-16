@@ -14,6 +14,7 @@ import ResultPage from "./pages/ResultPage.js";
 import styles from "./styles";
 import LoginPage from "./pages/Loginpage";
 import RegisterPage from "./pages/Registerpage";
+import ProfilePage from "./pages/Profilepage";
 
 import { NavigationBar } from "expo-navigation-bar";
 import { StatusBar } from "expo-status-bar";
@@ -36,6 +37,8 @@ export default function App() {
 
   const [token, setToken] = useState(null);
   const [authMessage, setAuthMessage] = useState("");
+  const [profileRecordings, setProfileRecordings] = useState([]);
+  const [profileUsername, setProfileUsername] = useState("Profile");
 
   const handleLogin = async () => {
     try{
@@ -103,6 +106,22 @@ export default function App() {
       });
   }, []);
 
+  useEffect(() => {
+    if (screen !== "profile" || !token) {
+      return;
+    }
+    fetch(`${API_URL}/recording/me`, {
+      headers: { Authorization: `Bearer ${token}`}
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      setProfileRecordings(data.recordings || []);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}, [screen, token]);
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar hidden/>
@@ -132,6 +151,8 @@ export default function App() {
               <RegisterPage message={authMessage} onRegister={{ setUsername, setEmail, setPassword, submit: handleRegister }} onBack={() => setAuthScreen("login")} />
             ) : activeTab === "help" ? (
               <HelpScreen/>
+            ) : screen === "profile" ? (
+              <ProfilePage username={profileUsername} recordings={profileRecordings} onBack={() => setScreen("home")}/>
             ) : screen === "results" ? (
               <ResultPage results={birdnetResults} onBack={() => setScreen("recording")} />
             ) : screen === "recording" ? (
@@ -163,6 +184,9 @@ export default function App() {
           ]}
         >
           <Text style={styles.bottomButtonIcon}>🎙</Text>
+        </Pressable>
+        <Pressable onPress={() => setScreen("profile")} style={styles.profileBottomButton} >
+          <Text style={styles.profileBottomButtonText}>P</Text>
         </Pressable>
       </View>
     </SafeAreaView>

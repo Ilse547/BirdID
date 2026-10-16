@@ -33,7 +33,9 @@ export default StyleSheet.create({
 		backgroundColor: "#ccffcc",
 		alignSelf: "stretch",
 		alignItems: "center",
-		justifyContent: "center"
+		justifyContent: "center",
+		flexDirection: "row",
+		position: "relative",
 	},
 	content: {
 		flex: 1,
@@ -255,5 +257,18 @@ export default StyleSheet.create({
 		color: "#fff",
 		fontWeight: "bold",
 		fontSize: 16,
+	},
+	profileBottomButton: {
+		position: "absolute",
+		right: 20,
+		width: 40,
+		height: 40,
+		borderRadius: 20,
+		backgroundColor: "#02f533",
+		alignItems: "center",
+		justifyContent: "center"
+	},
+	profileBottomButtonText: {
+		fontSize: 18,
 	}
 });
