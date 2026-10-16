@@ -71,7 +71,33 @@ app.get("/recording/me", authenticateToken, async (req, res) => {
        ORDER BY r.created_at DESC`,
       [req.user.userId]
     );
-    res.json({ recordings: result.rows });
+
+    const recordings = [];
+    for (const row of result.rows) {
+      let recording = recordings.find(
+          (item) => item.id === row.id
+      );
+      if (!recording) {
+        recording = {
+          id: row.id,
+          created_at: row.created_at,
+          location: "no poisiton",
+          results: []
+        };
+        recordings.push(recording);
+      }
+
+      if (row.common_name) {
+        recording.results.push({
+          common_name: row.common_name,
+          scientific_name: row.scientific_name,
+          confidence: row.confidence,
+          start_seconds: row.start_seconds,
+          end_seconds: row.end_seconds
+        });
+      }
+    }
+  res.json({ recordings }); 
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "not able to load recoridngs" });
