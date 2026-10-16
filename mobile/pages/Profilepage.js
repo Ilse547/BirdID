@@ -7,17 +7,38 @@ export default function ProfilePage({ username, recordings, onBack }) {
   return (
     <View style={styles.recordingScreen}>
       <Text style={styles.screenTitle}>{username} Profile</Text>
-      <Text>obersation</Text>
-      {recordings.length === 0 ? (
-        <Text>you dont have any</Text>
+
+      {selectedRecording ? (
+        <>
+          <Text>
+            Recording{" "}
+            {new Date(selectedRecording.created_at).toLocaleDateString("de-DE")}
+          </Text>
+          <Text>{selectedRecording.location}</Text>
+          {selectedRecording.results.map((result, index) => (
+            <Text key={index}>
+              {result.common_name} —{" "}
+              {(Number(result.confidence) * 100).toFixed(1)}%
+            </Text>
+          ))}
+          <Pressable style={styles.backButton} onPress={() => setSelectedRecording(null)}>
+            <Text style={styles.backButtonText}>
+              observations
+            </Text>
+          </Pressable>
+        </>
+      ) : recordings.length === 0 ? (
+        <Text>no observations</Text>
       ) : (
         recordings.map((recording) => (
-          <Pressable key={recording.id} onPress={() => setSelectedRecording(recording)} >
-            <Text>
+          <Pressable key={recording.id} style={styles.authButton} onPress={() => setSelectedRecording(recording)}>
+            <Text style={styles.authButtonText}>
               Recording{" "}
               {new Date(recording.created_at).toLocaleDateString("de-DE")}
             </Text>
-            <Text>{recording.location}</Text>
+            <Text style={styles.authButtonText}>
+              {recording.location}
+            </Text>
           </Pressable>
         ))
       )}
