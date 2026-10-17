@@ -242,6 +242,7 @@ export default StyleSheet.create({
 		padding: 12,
 		marginVertical: 6,
 		backgroundColor: "#fff",
+		color: "#050505"
 	},
 	authButton: {
 		width: 200,
@@ -270,5 +271,34 @@ export default StyleSheet.create({
 	},
 	profileBottomButtonText: {
 		fontSize: 18,
+	},
+	observationButton: {
+		width: "90%",
+		minHeight: 110,
+		paddingVertical: 18,
+		paddingHorizontal: 16,
+		marginVertical: 8,
+		borderRadius: 12,
+		backgroundColor: "#eb5e63",
+		alignItems: "center",
+		justifyContent: "center",
+		alignSelf: "center",
+	},
+	observationTitle: {
+		color: "#fff",
+		fontSize: 20,
+		lineHeight: 26,
+		fontWeight: "700",
+		textAlign: "center",
+		flexShrink: 1,
+	},
+	observationLocation: {
+		color: "#fff",
+		fontSize: 16,
+		lineHeight: 22,
+		marginTop: 8,
+		textAlign: "center",
+		flexShrink: 1,
+		maxWidth: "100%",
 	}
 });
