@@ -300,5 +300,17 @@ export default StyleSheet.create({
 		textAlign: "center",
 		flexShrink: 1,
 		maxWidth: "100%",
+	},
+	birdLink: {
+		color: "#0062ff",
+		fontSize: 18,
+		textDecorationLine: "underline",
+	},
+	birdResultRow: {
+		flexDirection: "row",
+		flexWrap: "wrap",
+		alignItems: "center",
+		justifyContent: "center",
+		marginVertical: 6,
 	}
 });

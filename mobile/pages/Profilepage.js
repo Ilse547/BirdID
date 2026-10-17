@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Pressable, Text, View, ScrollView} from "react-native";
+import { Pressable, Text, View, ScrollView, Linking} from "react-native";
 import styles from "../styles";
 
 export default function ProfilePage({ username, recordings, onBack }) {
@@ -16,10 +16,16 @@ export default function ProfilePage({ username, recordings, onBack }) {
             </Text>
             <Text>{selectedRecording.location}</Text>
             {selectedRecording.results.map((result, index) => (
-              <Text key={index}>
-                {result.common_name} —{" "}
-                {(Number(result.confidence) * 100).toFixed(1)}%
-              </Text>
+              <View key={index} style={styles.birdResultRow}>
+                <Pressable onPress={() =>Linking.openURL(`https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(result.common_name )}`)}>
+                  <Text style={styles.birdLink}>
+                    {result.common_name}
+                  </Text>
+                </Pressable>
+                <Text style={styles.birdConfidence}>
+                  {" "} {(Number(result.confidence) * 100).toFixed(1)}%
+                </Text>
+              </View>
             ))}
             <Pressable style={styles.backButton} onPress={() => setSelectedRecording(null)}>
               <Text style={styles.backButtonText}>
