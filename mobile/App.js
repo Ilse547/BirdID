@@ -132,7 +132,8 @@ export default function App() {
   useEffect(() => {
     const restoreLogin = async () => {
       try {
-        const savedToken = await AsyncStorage.getItem(USERNAME_KEY);
+        const savedToken = await AsyncStorage.getItem(TOKEN_KEY);
+        const savedUsername = await AsyncStorage.getItem(USERNAME_KEY);
         if (savedToken) {
           setToken(savedToken);
           setProfileUsername(savedUsername || "Profile");
