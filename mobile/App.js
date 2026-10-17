@@ -7,6 +7,7 @@ import {
   Pressable,
   Image
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import HelpScreen from "./pages/Helppage";
 import RecordingPage from "./pages/Recordingpage";
@@ -20,6 +21,7 @@ import { NavigationBar } from "expo-navigation-bar";
 import { StatusBar } from "expo-status-bar";
 
 const API_URL = "http://192.168.178.66:3000";
+const TOKEN_KEY = "birdid_token";
 
 export default function App() {
   const [message, setMessage] = useState("Hello World");
@@ -39,6 +41,7 @@ export default function App() {
   const [authMessage, setAuthMessage] = useState("");
   const [profileRecordings, setProfileRecordings] = useState([]);
   const [profileUsername, setProfileUsername] = useState("Profile");
+  const [authReady, setAuthReady] = useState(false);
 
   const handleLogin = async () => {
     try{
@@ -51,6 +54,7 @@ export default function App() {
       if(!response.ok) {
         throw new Error(data.error);
       }
+      await AsyncStorage.setItem(TOKEN_KEY, data.token);
       setToken(data.token);
       setAuthScreen(null);
     } catch(error) {
@@ -120,7 +124,32 @@ export default function App() {
     .catch((error) => {
       console.error(error);
     });
-}, [screen, token]);
+  }, [screen, token]);
+
+  useEffect(() => {
+    const restoreLogin = async () => {
+      try {
+        const savedToken = await AsyncStorage.getItem(TOKEN_KEY);
+        if (savedToken) {
+          setToken(savedToken);
+          setAuthScreen(null);
+        }
+      } catch (error) {
+        console.error("not able to restore login", error);
+      } finally {
+        setAuthReady(true);
+      }
+    };
+    restoreLogin();
+  }, []);
+
+  if (!authReady) {
+  return (
+    <SafeAreaView style={styles.container}>
+      <ActivityIndicator size="large" />
+    </SafeAreaView>
+  );
+}
 
   return (
     <SafeAreaView style={styles.container}>
