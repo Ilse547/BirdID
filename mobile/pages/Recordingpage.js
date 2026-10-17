@@ -7,7 +7,6 @@ import { File } from "expo-file-system";
 import styles from "../styles";
 import useBirdRecording from "../hooks/useBirdRecording";
 const API_URL = "http://192.168.178.66:3000";
-
 export default function Recordingpage({ onBack, onResults, autoStart, token}) {
   const {
     isRecording,
@@ -77,6 +76,7 @@ const handleUpload = async () => {
     const formData = new FormData();
     formData.append("audio", file);
     if (location) {
+      console.log("Location being uploaded:", location);
       formData.append("latitude", String(location.latitude));
       formData.append("longitude", String(location.longitude));
       if (location.region) {
