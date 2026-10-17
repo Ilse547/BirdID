@@ -15,7 +15,8 @@ export default function Recordingpage({ onBack, onResults, autoStart, token}) {
     recordingUri,
     error,
     startRecording,
-    stopRecording
+    stopRecording,
+    location
   } = useBirdRecording();
   const totalSeconds = Math.floor((durationMillis || 0) / 1000);
   const minutes = Math.floor(totalSeconds / 60).toString().padStart(2, "0");
@@ -66,7 +67,6 @@ const handleReplay = () => {
   player.play();
 };
   
-
 const handleUpload = async () => {
   if(!recordingUri) {
     return;
@@ -76,6 +76,13 @@ const handleUpload = async () => {
     const file = new File(recordingUri);
     const formData = new FormData();
     formData.append("audio", file);
+    if (location) {
+      formData.append("latitude", String(location.latitude));
+      formData.append("longitude", String(location.longitude));
+      if (location.region) {
+        formData.append("region", location.region);
+      }
+    }
     const response = await expoFetch(`${API_URL}/upload`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${token}`},
@@ -94,7 +101,6 @@ const handleUpload = async () => {
     setUploadMessage("Upload failed");
   }
 };
-
   return (
     <View style={styles.recordingScreen}>
       <Text style={styles.screenTitle}>Recording</Text>

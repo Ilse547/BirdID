@@ -27,12 +27,26 @@ app.post("/upload", authenticateToken, upload.single("audio"), async (req, res) 
   console.log("Upload received:", req.file.originalname);
   try {
     const birdnetResults = await analyzeAudio( req.file.path, req.file.originalname );
-
+    const latitude = req.body.latitude
+      ? Number(req.body.latitude)
+      : null;
+    const longitude = req.body.longitude
+      ? Number(req.body.longitude)
+      : null;
+    const region = req.body.region || null;
     const recordingResult = await db.query(
-      `INSERT INTO recordings (user_id, original_name, stored_path)
-      VALUES ($1, $2, $3)
+      `INSERT INTO recordings
+      (user_id, original_name, stored_path, latitude, longitude, region)
+      VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING id`,
-      [req.user.userId, req.file.originalname, req.file.path]
+      [
+        req.user.userId,
+        req.file.originalname,
+        req.file.path,
+        latitude,
+        longitude,
+        region
+      ]
     );
     const recordingId = recordingResult.rows[0].id;
     for (const result of birdnetResults) {
@@ -50,28 +64,29 @@ app.post("/upload", authenticateToken, upload.single("audio"), async (req, res) 
     console.error(error);
     res.status(500).json({ error: "BirdNET failed" });
   }
-
 });
 app.get("/recording/me", authenticateToken, async (req, res) => {
   try {
     const result = await db.query(
       `SELECT
-         r.id,
-         r.original_name,
-         r.created_at,
-         ir.common_name,
-         ir.scientific_name,
-         ir.confidence,
-         ir.start_seconds,
-         ir.end_seconds
-       FROM recordings r
-       LEFT JOIN identification_results ir
-         ON ir.recording_id = r.id
-       WHERE r.user_id = $1
-       ORDER BY r.created_at DESC`,
+        r.id,
+        r.original_name,
+        r.created_at,
+        r.latitude,
+        r.longitude,
+        r.region,
+        ir.common_name,
+        ir.scientific_name,
+        ir.confidence,
+        ir.start_seconds,
+        ir.end_seconds
+        FROM recordings r
+        LEFT JOIN identification_results ir
+          ON ir.recording_id = r.id
+        WHERE r.user_id = $1
+        ORDER BY r.created_at DESC`,
       [req.user.userId]
     );
-
     const recordings = [];
     for (const row of result.rows) {
       let recording = recordings.find(
@@ -81,12 +96,11 @@ app.get("/recording/me", authenticateToken, async (req, res) => {
         recording = {
           id: row.id,
           created_at: row.created_at,
-          location: "no poisiton",
+          location: row.region || "locaiton not found",
           results: []
         };
         recordings.push(recording);
       }
-
       if (row.common_name) {
         recording.results.push({
           common_name: row.common_name,
