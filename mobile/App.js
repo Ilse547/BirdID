@@ -22,6 +22,7 @@ import { StatusBar } from "expo-status-bar";
 
 const API_URL = "http://192.168.178.66:3000";
 const TOKEN_KEY = "birdid_token";
+const USERNAME_KEY = "birdid_username";
 
 export default function App() {
   const [message, setMessage] = useState("Hello World");
@@ -55,7 +56,9 @@ export default function App() {
         throw new Error(data.error);
       }
       await AsyncStorage.setItem(TOKEN_KEY, data.token);
+      await AsyncStorage.setItem(USERNAME_KEY, data.user.username);
       setToken(data.token);
+      setProfileUsername(data.user.username);
       setAuthScreen(null);
     } catch(error) {
       setAuthMessage(error.message);
@@ -129,9 +132,10 @@ export default function App() {
   useEffect(() => {
     const restoreLogin = async () => {
       try {
-        const savedToken = await AsyncStorage.getItem(TOKEN_KEY);
+        const savedToken = await AsyncStorage.getItem(USERNAME_KEY);
         if (savedToken) {
           setToken(savedToken);
+          setProfileUsername(savedUsername || "Profile");
           setAuthScreen(null);
         }
       } catch (error) {
