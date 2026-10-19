@@ -113,6 +113,16 @@ export default StyleSheet.create({
 		justifyContent: "center",
 		alignItems: "center"
 	},
+	profileScroll: {
+		width: "100%",
+		flex: 1,
+		marginBottom: 85,
+	},
+	profileScrollContent: {
+		alignItems: "center",
+		paddingTop: 20,
+		paddingBottom: 50,
+	},
 	helpText: {
 		fontSize: 20,
 		lineHeight: 25,
