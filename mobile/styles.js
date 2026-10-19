@@ -3,7 +3,7 @@ export default StyleSheet.create({
 
 	container: {
 		flex: 1,
-		backgroundColor: "#ebfaeb",
+		backgroundColor: "#f5f7f2",
 		width: "100%",
 	},
 	title: {
@@ -30,7 +30,7 @@ export default StyleSheet.create({
 	bottomBar: {
 		width: "100%",
 		height: 80,
-		backgroundColor: "#ccffcc",
+		backgroundColor: "#e9e5e9",
 		alignSelf: "stretch",
 		alignItems: "center",
 		justifyContent: "center",
@@ -120,7 +120,7 @@ export default StyleSheet.create({
 		marginBottom: 18
 	},
 	backButton: {
-		backgroundColor: "#f4b942",
+		backgroundColor: "#8BC34A",
 		paddingHorizontal: 10,
 		paddingVertical: 5,
 		borderRadius: 999
@@ -279,7 +279,7 @@ export default StyleSheet.create({
 		paddingHorizontal: 16,
 		marginVertical: 8,
 		borderRadius: 12,
-		backgroundColor: "#eb5e63",
+		backgroundColor: "#4caf50",
 		alignItems: "center",
 		justifyContent: "center",
 		alignSelf: "center",

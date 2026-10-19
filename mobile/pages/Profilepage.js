@@ -6,7 +6,7 @@ export default function ProfilePage({ username, recordings, onBack }) {
   const [selectedRecording, setSelectedRecording] = useState(null);
   return (
     <View style={styles.recordingScreen}>
-      <Text style={styles.screenTitle}>{username} Profile</Text>
+      <Text style={[styles.screenTitle, {color:"#050505"}]}>Hello {username} !</Text>
       <ScrollView style={styles.profileScroll} contentContainerStyle={styles.profileScrollContent} showsVerticalScrollIndicator={true}>
         {selectedRecording ? (
           <>
@@ -29,7 +29,7 @@ export default function ProfilePage({ username, recordings, onBack }) {
             ))}
             <Pressable style={styles.backButton} onPress={() => setSelectedRecording(null)}>
               <Text style={styles.backButtonText}>
-                observations
+                Back To Observations
               </Text>
             </Pressable>
           </>
@@ -43,15 +43,12 @@ export default function ProfilePage({ username, recordings, onBack }) {
                 {new Date(recording.created_at).toLocaleDateString("de-DE")}
               </Text>
               <Text style={styles.observationLocation}>
-                {recording.location}
+                📍{recording.location}
               </Text>
             </Pressable>
           ))
         )}
       </ScrollView>
-      <Pressable style={styles.backButton} onPress={onBack}>
-        <Text style={styles.backButtonText}>Back</Text>
-      </Pressable>
     </View>
   );
 }
