@@ -16,6 +16,7 @@ import styles from "./styles";
 import LoginPage from "./pages/Loginpage";
 import RegisterPage from "./pages/Registerpage";
 import ProfilePage from "./pages/Profilepage";
+import FollowerPage from "./pages/Followerpage";
 
 import { NavigationBar } from "expo-navigation-bar";
 import { StatusBar } from "expo-status-bar";
@@ -185,6 +186,8 @@ export default function App() {
               <RegisterPage message={authMessage} onRegister={{ setUsername, setEmail, setPassword, submit: handleRegister }} onBack={() => setAuthScreen("login")} />
             ) : activeTab === "help" ? (
               <HelpScreen/>
+            ) : screen === "followers" ? (
+                <FollowerPage token={token}/>
             ) : screen === "profile" ? (
               <ProfilePage username={profileUsername} recordings={profileRecordings} onBack={() => setScreen("home")}/>
             ) : screen === "results" ? (
@@ -210,16 +213,17 @@ export default function App() {
           </View>
         </View>
       <View style={styles.bottomBar}>
+        <Pressable onPress={() => setScreen("followers")} style={[styles.profileBottomButton, { left: 20 }]}>
+          <Text style={styles.profileBottomButtonText}>
+            F
+          </Text>
+        </Pressable>
         <Pressable
           onPress={() => {setAutoStartRecording(true); setScreen("recording"); }}
-          style={({ pressed }) => [
-            styles.bottomButton,
-            pressed && styles.bottomButtonPressed
-          ]}
-        >
+          style={({ pressed }) => [styles.bottomButton, pressed && styles.bottomButtonPressed]}>
           <Text style={styles.bottomButtonIcon}>🎙</Text>
         </Pressable>
-        <Pressable onPress={() => setScreen("profile")} style={styles.profileBottomButton} >
+        <Pressable onPress={() => setScreen("profile")} style={[styles.profileBottomButton, { right: 20 }]}>
           <Text style={styles.profileBottomButtonText}>P</Text>
         </Pressable>
       </View>
