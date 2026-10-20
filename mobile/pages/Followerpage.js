@@ -4,7 +4,7 @@ import styles from "../styles";
 
 const API_URL = "http://192.168.178.66:3000";
 
-export default function FollowerPage({ token }) {
+export default function FollowerPage({ token, onSessionExpired}) {
   const [query, setQuery] = useState("");
   const [users, setUsers] = useState([]);
   const [following, setFollowing] = useState([]);
@@ -20,6 +20,10 @@ export default function FollowerPage({ token }) {
           Authorization: `Bearer ${token}`
         }
       });
+      if (response.status === 403) {
+        onSessionExpired();
+        return;
+      }
       const data = await response.json();
       if (!response.ok) {
         throw new Error(data.error);
@@ -41,6 +45,10 @@ export default function FollowerPage({ token }) {
         `${API_URL}/users/search?q=${encodeURIComponent(query.trim())}`,
         {headers: {Authorization: `Bearer ${token}`}}
       );
+      if (response.status === 403) {
+        onSessionExpired();
+        return;
+      }
       const data = await response.json();
       if (!response.ok) {
         throw new Error(data.error);
@@ -62,6 +70,10 @@ export default function FollowerPage({ token }) {
           }
         }
       );
+      if (response.status === 403) {
+        onSessionExpired();
+        return;
+      }
       const data = await response.json();
       if (!response.ok) {
         throw new Error(data.error);
