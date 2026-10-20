@@ -6,12 +6,14 @@ const { analyzeAudio } = require("./services/birdnetService");
 const db = require("./db/database");
 const authRoutes = require("./routes/authRoutes");
 const authenticateToken = require("./middleware/authMid");
+const userRoutes = require("./routes/userRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use("/auth", authRoutes);
+app.use("/users", userRoutes);
 
 const uploadDirectory = path.join(__dirname, 'upload');
 if(!fs.existsSync(uploadDirectory)) {
