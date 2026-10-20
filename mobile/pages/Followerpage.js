@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import {Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import styles from "../styles";
-
-const API_URL = "http://192.168.178.66:3000";
+import { API_URL } from "../config";
 
 export default function FollowerPage({ token, onSessionExpired}) {
   const [query, setQuery] = useState("");
@@ -105,8 +104,8 @@ export default function FollowerPage({ token, onSessionExpired}) {
         <View key={user.id} style={styles.userRow}>
           <Text style={styles.userName}>{user.username}</Text>
 
-          <Pressable style={styles.followButton} onPress={() => toggleFollow(user)}>
-            <Text style={styles.followButtonText}>
+          <Pressable style={[styles.authButton, {backgroundColor:"#050505"}]} onPress={() => toggleFollow(user)}>
+            <Text style={styles.authButtonText}>
               {user.is_following ? "Following" : "Follow"}
             </Text>
           </Pressable>

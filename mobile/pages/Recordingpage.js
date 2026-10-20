@@ -3,10 +3,9 @@ import { useEffect, useState } from "react";
 import { setAudioModeAsync, useAudioPlayer, useAudioPlayerStatus} from "expo-audio";
 import { fetch as expoFetch } from "expo/fetch";
 import { File } from "expo-file-system";
-
+import { API_URL } from "../config";
 import styles from "../styles";
 import useBirdRecording from "../hooks/useBirdRecording";
-const API_URL = "http://192.168.178.66:3000";
 export default function Recordingpage({ onBack, onResults, autoStart, token,onSessionExpired}) {
   const {
     isRecording,

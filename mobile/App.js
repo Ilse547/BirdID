@@ -20,8 +20,8 @@ import FollowerPage from "./pages/Followerpage";
 
 import { NavigationBar } from "expo-navigation-bar";
 import { StatusBar } from "expo-status-bar";
+import { API_URL } from "./config";
 
-const API_URL = "http://192.168.178.66:3000";
 const TOKEN_KEY = "birdid_token";
 const USERNAME_KEY = "birdid_username";
 

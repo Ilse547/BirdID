@@ -26,3 +26,4 @@ birdnet/test-output/
 backend/upload
 
 backend/.env
+mobile/.env
