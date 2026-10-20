@@ -121,9 +121,17 @@ export default function App() {
     fetch(`${API_URL}/recording/me`, {
       headers: { Authorization: `Bearer ${token}`}
     })
-    .then((response) => response.json())
+    .then(async (response) => {
+      if (response.status === 403){
+        await handleSessionExpired();
+        return null;
+      }
+      return response.json();
+    })
     .then((data) => {
-      setProfileRecordings(data.recordings || []);
+      if (data) {
+        setProfileRecordings(data.recordings || []);
+      }
     })
     .catch((error) => {
       console.error(error);
@@ -148,6 +156,19 @@ export default function App() {
     };
     restoreLogin();
   }, []);
+
+  const handleSessionExpired = async () => {
+    await AsyncStorage.multiRemove([
+      TOKEN_KEY,
+      USERNAME_KEY
+    ]);
+    setToken(null);
+    setProfileUsername("Profile");
+    setScreen("home");
+    setActiveTab(null);
+    setAuthMessage("your session expired, please log in");
+    setAuthScreen("login");
+  };
 
   if (!authReady) {
   return (
@@ -187,7 +208,7 @@ export default function App() {
             ) : activeTab === "help" ? (
               <HelpScreen/>
             ) : screen === "followers" ? (
-                <FollowerPage token={token}/>
+              <FollowerPage token={token} onSessionExpired={handleSessionExpired}/>
             ) : screen === "profile" ? (
               <ProfilePage username={profileUsername} recordings={profileRecordings} onBack={() => setScreen("home")}/>
             ) : screen === "results" ? (
@@ -196,6 +217,7 @@ export default function App() {
               <RecordingPage
                 token={token}
                 autoStart={autoStartRecording}
+                onSessionExpired={handleSessionExpired}
                 onResults={(results) => {
                   setAutoStartRecording(false);
                   setBirdnetResults(results);

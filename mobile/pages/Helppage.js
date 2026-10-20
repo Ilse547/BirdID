@@ -11,6 +11,10 @@ export default function Helppage() {
 			<Text style={styles.helpText}>
 				We will analyse the sound and tell you what the birds youre hearing are.
 			</Text>
+			<Text style={styles.helpText}>Results:</Text>
+			<Text style={styles.helpText}>
+				Results are seperated into 2 categories, depending on the confidence(number next to bird id)
+			</Text>
 		</View>
 	);
 }

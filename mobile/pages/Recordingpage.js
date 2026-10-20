@@ -7,7 +7,7 @@ import { File } from "expo-file-system";
 import styles from "../styles";
 import useBirdRecording from "../hooks/useBirdRecording";
 const API_URL = "http://192.168.178.66:3000";
-export default function Recordingpage({ onBack, onResults, autoStart, token}) {
+export default function Recordingpage({ onBack, onResults, autoStart, token,onSessionExpired}) {
   const {
     isRecording,
     durationMillis,
@@ -71,7 +71,7 @@ const handleUpload = async () => {
     return;
   }
   try {
-    setUploadMessage("upllading");
+    setUploadMessage("uploading");
     const file = new File(recordingUri);
     const formData = new FormData();
     formData.append("audio", file);
@@ -88,6 +88,10 @@ const handleUpload = async () => {
       headers: { Authorization: `Bearer ${token}`},
       body: formData
     });
+    if (response.status === 403) {
+      await onSessionExpired();
+      return;
+    }
     const data = await response.json();
     if(!response.ok) {
       throw new Error(data.error || "upload failed");
