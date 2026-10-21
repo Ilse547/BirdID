@@ -15,8 +15,8 @@ export default function RegisterPage({ onRegister, onBack, message }) {
           {message}
         </Text>
       )}
-      <Pressable style={styles.authButton} onPress={onRegister.submit}>
-        <Text style={styles.authButtonText}>register</Text>
+      <Pressable style={styles.Primarybutton} onPress={onRegister.submit}>
+        <Text style={styles.PrimarybuttonText}>register</Text>
       </Pressable>
 
       <Pressable onPress={onBack}>

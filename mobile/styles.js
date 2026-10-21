@@ -7,10 +7,16 @@ export default StyleSheet.create({
 		width: "100%",
 	},
 	title: {
-		color: "#ffffff",
+		color: "#000000",
 		fontSize: 36,
 		fontWeight: "800",
 		marginBottom: 24
+	},
+	title2: {
+		color: "#000000",
+		fontSize: 24,
+		fontWeight: "800",
+		marginBottom: 12
 	},
 	messageOk: {
 		color: "#4caf50",
@@ -22,15 +28,10 @@ export default StyleSheet.create({
 		fontSize: 16,
 		textAlign: "center"
 	},
-	test: {
-		color: "#ffffff",
-		fontSize: 20,
-		textAlign: "center"
-	},
 	bottomBar: {
 		width: "100%",
 		height: 80,
-		backgroundColor: "#e9e5e9",
+		backgroundColor: "#E8F5E9",
 		alignSelf: "stretch",
 		alignItems: "center",
 		justifyContent: "center",
@@ -44,22 +45,88 @@ export default StyleSheet.create({
 		justifyContent: "center",
 		paddingHorizontal: 24
 	},
+
+	//BUTTONS
 	bottomButton: {
 		width: 120,
 		height: 120 ,
-		backgroundColor: "#ff3300",
+		backgroundColor: "#E63946",
 		borderRadius: 60,
 		alignItems: "center",
 		justifyContent: "center"
 	},
 	bottomButtonPressed: {
-		backgroundColor: "#ff8566"
+		backgroundColor: "#C42D39"
 	},
 	bottomButtonIcon: {
 		fontSize: 50,
 		textAlign: "center",
 		includeFontPadding: false
 	},
+	Primarybutton: {
+		width: 200,
+		minHeight: 50,
+		backgroundColor: "#8BC34A",
+		padding: 14,
+		borderRadius: 8,
+		marginTop: 12,
+		alignItems: "center",
+		marginBottom: 20,
+	},
+	PrimarybuttonText: {
+		color: "#000000",
+		fontWeight: "bold",
+		fontSize: 16,
+	},
+	Secondarybutton: {
+		backgroundColor: "#8BC34A",
+		paddingHorizontal: 10,
+		paddingVertical: 5,
+		borderRadius: 999,
+		alignItems: "center"
+	},
+	SecondarybuttonText: {
+		color: "#000000",
+		fontSize: 15,
+		fontWeight: "700",
+	},
+	SecondarybuttonPressed: {
+		opacity: 0.6
+	},
+
+	BottomBarbutton: {
+		position: "absolute",
+		width: 45,
+		height: 45,
+		borderRadius: 30,
+		backgroundColor: "#8BC34A",
+		alignItems: "center",
+		justifyContent: "center",
+	},
+	BottomBarbuttonText: {
+		fontSize: 18,
+		fontWeight: "bold"
+	},
+
+	
+	observationTitle: {
+		color: "#000000",
+		fontSize: 20,
+		lineHeight: 26,
+		fontWeight: "700",
+		textAlign: "center",
+		flexShrink: 1,
+	},
+	observationLocation: {
+		color: "#fff",
+		fontSize: 16,
+		lineHeight: 22,
+		marginTop: 8,
+		textAlign: "center",
+		flexShrink: 1,
+		maxWidth: "100%",
+	},
+
 	header: {
 		width: "100%",
 		flexDirection: "row",
@@ -90,23 +157,6 @@ export default StyleSheet.create({
 		alignItems: "center",
 		justifyContent: "center"
 	},
-	helpButton: {
-		backgroundColor: "#f4b942",
-		paddingHorizontal: 10,
-		paddingVertical: 5,
-		borderRadius: 999
-	},
-
-	helpButtonPressed: {
-		opacity: 0.6
-	},
-
-	helpButtonText: {
-		color: "#111116",
-		fontSize: 15,
-		fontWeight: "700"
-	},
-
 	helpScreen: {
 		flex: 1,
 		width: "100%",
@@ -124,17 +174,12 @@ export default StyleSheet.create({
 		paddingBottom: 50,
 	},
 	helpText: {
-		fontSize: 20,
+		fontSize: 12,
 		lineHeight: 25,
 		textAlign: "center",
 		marginBottom: 18
 	},
-	backButton: {
-		backgroundColor: "#8BC34A",
-		paddingHorizontal: 10,
-		paddingVertical: 5,
-		borderRadius: 999
-	},
+
 	recordingScreen: {
 		flex: 1,
 		width: "100%",
@@ -147,82 +192,11 @@ export default StyleSheet.create({
 		fontWeight: "800",
 		marginBottom: 24
 	},
-	recordingStatus: {
-		color: "#ffffff",
-		fontSize: 18,
-		marginBottom: 16
-	},
-	recordingTimer: {
-		color: "#f4b942",
-		fontSize: 40,
-		fontWeight: "700",
-		marginBottom: 32
-	},
-	recordButton: {
-		backgroundColor: "#f4b942",
-		paddingVertical: 16,
-		paddingHorizontal: 28,
-		borderRadius: 10,
-		marginBottom: 20
-	},
-	recordButtonText: {
-		color: "#111116",
-		fontSize: 16,
-		fontWeight: "700"
-	},
-	stopButton: {
-		backgroundColor: "#d9534f",
-		paddingVertical: 16,
-		paddingHorizontal: 28,
-		borderRadius: 10,
-		marginBottom: 20
-	},
-	stopButtonText: {
-		color: "#ffffff",
-		fontSize: 16,
-		fontWeight: "700"
-	},
 	recordingError: {
 		color: "#ff8a80",
 		fontSize: 15,
 		textAlign: "center",
 		marginBottom: 16
-	},
-	backButtonText: {
-		color: "#ffffff",
-		fontSize: 16,
-		fontWeight: "600"
-	},
-	playButton: {
-		backgroundColor: "#4caf50",
-		paddingVertical: 14,
-		paddingHorizontal: 24,
-		borderRadius: 8,
-		marginBottom: 12
-	},
-	playButtonText: {
-		color: "#ffffff",
-		fontSize: 16,
-		fontWeight: "700"
-	},
-	replayButton: {
-		backgroundColor: "#555555",
-		paddingVertical: 12,
-		paddingHorizontal: 20,
-		borderRadius: 8,
-		marginBottom: 20
-	},
-	replayButtonText: {
-		color: "#ffffff",
-		fontSize: 15,
-		fontWeight: "600"
-	},
-	recordingUri: {
-		color: "#333333",
-		fontSize: 12,
-		textAlign: "center",
-		marginHorizontal: 20,
-		marginBottom: 20
 	},
 	confident : {
 		color: "#17b348",
@@ -254,62 +228,8 @@ export default StyleSheet.create({
 		backgroundColor: "#fff",
 		color: "#050505"
 	},
-	authButton: {
-		width: 200,
-		height: 50,
-		backgroundColor: "#ff0000",
-		padding: 14,
-		borderRadius: 8,
-		marginTop: 12,
-		alignItems: "center",
-		marginBottom: 20,
-	},
-	authButtonText: {
-		color: "#fff",
-		fontWeight: "bold",
-		fontSize: 16,
-	},
-	profileBottomButton: {
-		position: "absolute",
-		width: 40,
-		height: 40,
-		borderRadius: 20,
-		backgroundColor: "#02f533",
-		alignItems: "center",
-		justifyContent: "center"
-	},
-	profileBottomButtonText: {
-		fontSize: 18,
-	},
-	observationButton: {
-		width: "90%",
-		minHeight: 110,
-		paddingVertical: 18,
-		paddingHorizontal: 16,
-		marginVertical: 8,
-		borderRadius: 12,
-		backgroundColor: "#4caf50",
-		alignItems: "center",
-		justifyContent: "center",
-		alignSelf: "center",
-	},
-	observationTitle: {
-		color: "#fff",
-		fontSize: 20,
-		lineHeight: 26,
-		fontWeight: "700",
-		textAlign: "center",
-		flexShrink: 1,
-	},
-	observationLocation: {
-		color: "#fff",
-		fontSize: 16,
-		lineHeight: 22,
-		marginTop: 8,
-		textAlign: "center",
-		flexShrink: 1,
-		maxWidth: "100%",
-	},
+
+
 	birdLink: {
 		color: "#0062ff",
 		fontSize: 18,
@@ -321,5 +241,21 @@ export default StyleSheet.create({
 		alignItems: "center",
 		justifyContent: "center",
 		marginVertical: 6,
-	}
+	},
+	helpScroll: {
+		flex: 1,
+		width: "100%"
+	},
+	helpContent: {
+		alignItems: "center",
+		paddingHorizontal: 24,
+		paddingTop: 30,
+		paddingBottom: 120
+	},
+	divider: {
+		width: 350,
+		height: 1,
+		backgroundColor: "#000000",
+		marginVertical: 20,
+	},
 });

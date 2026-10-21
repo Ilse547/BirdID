@@ -6,7 +6,7 @@ export default function ProfilePage({ username, recordings, onBack }) {
   const [selectedRecording, setSelectedRecording] = useState(null);
   return (
     <View style={styles.recordingScreen}>
-      <Text style={[styles.screenTitle, {color:"#050505"}]}>Hello {username} !</Text>
+      <Text style={[styles.title, {color:"#050505"}]}>Hello {username} !</Text>
       <ScrollView style={styles.profileScroll} contentContainerStyle={styles.profileScrollContent} showsVerticalScrollIndicator={true}>
         {selectedRecording ? (
           <>
@@ -27,8 +27,8 @@ export default function ProfilePage({ username, recordings, onBack }) {
                 </Text>
               </View>
             ))}
-            <Pressable style={styles.backButton} onPress={() => setSelectedRecording(null)}>
-              <Text style={styles.backButtonText}>
+            <Pressable style={styles.Secondarybutton} onPress={() => setSelectedRecording(null)}>
+              <Text style={styles.SecondarybuttonText}>
                 Back To Observations
               </Text>
             </Pressable>
@@ -37,7 +37,7 @@ export default function ProfilePage({ username, recordings, onBack }) {
           <Text>no observations</Text>
         ) : (
           recordings.map((recording) => (
-            <Pressable key={recording.id} style={styles.observationButton} onPress={() => setSelectedRecording(recording)}>
+            <Pressable key={recording.id} style={[styles.Primarybutton, {minWidth: 300}]} onPress={() => setSelectedRecording(recording)}>
               <Text style={styles.observationTitle}>
                 Recording{" "}
                 {new Date(recording.created_at).toLocaleDateString("de-DE")}

@@ -106,20 +106,20 @@ const handleUpload = async () => {
 };
   return (
     <View style={styles.recordingScreen}>
-      <Text style={styles.screenTitle}>Recording</Text>
-        <Text style={styles.recordingStatus}>
+      <Text style={styles.title}>Recording</Text>
+        <Text style={styles.title2}>
           {isRecording
             ? "Recording..."
             : recordingUri
-              ? "Recording saved"
-              : "Ready to record"}
+              ? "Recording Saved"
+              : "Ready To Record"}
         </Text>
-        <Text style={styles.recordingTimer}>
+        <Text style={[styles.title2, {fontSize: 20}]}>
           {minutes}:{seconds}
         </Text>
         {isRecording && (
-        <Pressable style={styles.stopButton} onPress={stopRecording}>
-          <Text style={styles.stopButtonText}>
+        <Pressable style={[styles.Primarybutton, {width: 250}]} onPress={stopRecording}>
+          <Text style={styles.PrimarybuttonText}>
             Stop recording
           </Text>
         </Pressable>
@@ -131,20 +131,20 @@ const handleUpload = async () => {
       )}
       {recordingUri && !isRecording && (
         <>
-          <Pressable style={styles.playButton} onPress={handlePlayPause} >
-            <Text style={styles.playButtonText}>
+          <Pressable style={[styles.Primarybutton, {width: 250}]} onPress={handlePlayPause} >
+            <Text style={styles.PrimarybuttonText}>
               {playerStatus.playing
                 ? "Pause recording"
                 : "Play recording"}
             </Text>
           </Pressable>
 
-          <Pressable style={styles.replayButton} onPress={handleReplay}>
-            <Text style={styles.replayButtonText}> Replay from beginning</Text>
+          <Pressable style={[styles.Primarybutton, {width: 250}]} onPress={handleReplay}>
+            <Text style={styles.PrimarybuttonText}> Replay from beginning</Text>
           </Pressable>
 
-          <Pressable style={styles.recordButton} onPress={handleUpload}>
-            <Text style={styles.recordButtonText}> Uploaad recording </Text>
+          <Pressable style={[styles.Primarybutton, {width: 250}]} onPress={handleUpload}>
+            <Text style={styles.PrimarybuttonText}> Upload recording </Text>
           </Pressable>
           {uploadMessage !== "" && (
             <Text >{uploadMessage}</Text>
@@ -160,8 +160,8 @@ const handleUpload = async () => {
           )}
         </>
       )}
-      <Pressable style={styles.backButton} onPress={onBack}>
-        <Text style={styles.backButtonText}>Back</Text>
+      <Pressable style={styles.Secondarybutton} onPress={onBack}>
+        <Text style={styles.SecondarybuttonText}>Back</Text>
       </Pressable>
     </View>
   );

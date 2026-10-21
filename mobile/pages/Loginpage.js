@@ -15,8 +15,8 @@ export default function LoginPage({ onLogin, onRegister, message }) {
         </Text>
       )}
 
-      <Pressable style={styles.authButton} onPress={onLogin.submit}>
-        <Text style={styles.authButtonText}>log in</Text>
+      <Pressable style={styles.Primarybutton} onPress={onLogin.submit}>
+        <Text style={styles.PrimarybuttonText}>log in</Text>
       </Pressable>
 
       <Pressable onPress={onRegister}>

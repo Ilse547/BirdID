@@ -190,13 +190,9 @@ export default function App() {
           <Text style={styles.headerTitle}>Bird ID</Text>
         </View>
 
-        <Pressable
-          onPress={() =>
-          setActiveTab(activeTab === "help" ? "home" : "help")
-        }
-        style={({ pressed }) => [ styles.helpButton,pressed && styles.helpButtonPressed]}>
-        <Text style={styles.helpButtonText}>
-          {activeTab === "help" ? "Back" : "Help"}
+        <Pressable onPress={() => {setActiveTab(null); setScreen("home");}} style={({ pressed }) => [ styles.Secondarybutton,pressed && styles.SecondarybuttonPressed]}>
+        <Text style={styles.SecondarybuttonText}>
+          Home
         </Text>
       </Pressable>
         </View>
@@ -230,23 +226,35 @@ export default function App() {
                 }}
               />
             ) : (
-              <Text>Home Screen</Text>
+              <Text>
+                Welcome to BirdID
+              </Text>
             )}
           </View>
         </View>
       <View style={styles.bottomBar}>
-        <Pressable onPress={() => setScreen("followers")} style={[styles.profileBottomButton, { left: 20 }]}>
-          <Text style={styles.profileBottomButtonText}>
-            F
+        <Pressable onPress={() => {setActiveTab(null); setScreen("home");}} style={[ styles.BottomBarbutton, { left: 75 }]}>
+          <Text style={styles.BottomBarbuttonText}>
+            🏠
+          </Text>
+        </Pressable>
+        <Pressable onPress={() => {setActiveTab("help"); setScreen("home"); }} style={[styles.BottomBarbutton, { left: 20 }]}>
+          <Text style={styles.BottomBarbuttonText}>
+            ❓
+          </Text>
+        </Pressable>
+        <Pressable onPress={() => {setActiveTab(null); setScreen("followers");}} style={[styles.BottomBarbutton, { right: 80 }]}>
+          <Text style={styles.BottomBarbuttonText}>
+            👥
           </Text>
         </Pressable>
         <Pressable
-          onPress={() => {setAutoStartRecording(true); setScreen("recording"); }}
+          onPress={() => {setActiveTab(null); setAutoStartRecording(true); setScreen("recording"); }}
           style={({ pressed }) => [styles.bottomButton, pressed && styles.bottomButtonPressed]}>
           <Text style={styles.bottomButtonIcon}>🎙</Text>
         </Pressable>
-        <Pressable onPress={() => setScreen("profile")} style={[styles.profileBottomButton, { right: 20 }]}>
-          <Text style={styles.profileBottomButtonText}>P</Text>
+        <Pressable onPress={() => {setActiveTab(null); setScreen("profile");}} style={[styles.BottomBarbutton, { right: 20 }]}>
+          <Text style={styles.BottomBarbuttonText}>👤</Text>
         </Pressable>
       </View>
     </SafeAreaView>

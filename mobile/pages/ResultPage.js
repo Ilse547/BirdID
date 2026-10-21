@@ -25,8 +25,8 @@ export default function ResultsPage({ results, onBack }) {
             {result[3]} — {(Number(result[6]) * 100).toFixed(1)}%
           </Text>
         ))}
-      <Pressable style={styles.backButton} onPress={onBack}>
-        <Text style={styles.backButtonText}>Back</Text>
+      <Pressable style={styles.Secondarybutton} onPress={onBack}>
+        <Text style={styles.SecondarybuttonText}>Back</Text>
       </Pressable>
     </View>
   );

@@ -92,11 +92,11 @@ export default function FollowerPage({ token, onSessionExpired}) {
 
   return (
     <ScrollView style={styles.peopleScreen} contentContainerStyle={styles.peopleContent}>
-      <Text style={styles.screenTitle}>people</Text>
+      <Text style={[styles.title, {fontSize: 30}]}>People</Text>
       <TextInput style={styles.inputBox} placeholder="Search username" placeholderTextColor="#777" value={query} onChangeText={setQuery} onSubmitEditing={searchUsers}/>
 
-      <Pressable style={styles.authButton} onPress={searchUsers} >
-        <Text style={styles.authButtonText}>search</Text>
+      <Pressable style={styles.Primarybutton} onPress={searchUsers} >
+        <Text style={styles.PrimarybuttonText}>search</Text>
       </Pressable>
 
       {message !== "" && (<Text style={styles.messageError}>{message}</Text>)}
@@ -104,14 +104,16 @@ export default function FollowerPage({ token, onSessionExpired}) {
         <View key={user.id} style={styles.userRow}>
           <Text style={styles.userName}>{user.username}</Text>
 
-          <Pressable style={[styles.authButton, {backgroundColor:"#050505"}]} onPress={() => toggleFollow(user)}>
-            <Text style={styles.authButtonText}>
+          <Pressable style={styles.Primarybutton} onPress={() => toggleFollow(user)}>
+            <Text style={styles.PrimarybuttonText}>
               {user.is_following ? "Following" : "Follow"}
             </Text>
           </Pressable>
         </View>
       ))}
-      <Text style={styles.followingTitle}>Following</Text>
+      <View style={styles.divider}/>
+      
+      <Text style={styles.title2}>Following:</Text>
       {following.length === 0 ? (
         <Text>You are not following anyone yet.</Text>
       ) : (
