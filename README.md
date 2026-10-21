@@ -1,6 +1,51 @@
-# Bird identification app
+<div align="center">
 
-## Mobile app using Express for the backend and React native for the mobile app.
+# Bird ID
+**Record Bird sounds to identify them**
+
+</div>
+
+## Table of contents
+
+- [About](#about)
+- [Features](#features)
+- [Releases](#releases)
+- [Project structure](#project-structure)
+
+## About
+Bird ID is an app that records bird sounds and identifies them using [BirdNET](https://github.com/birdnet-team/BirdNET-Analyzer) to analyze the sounds and give you the results
+
+## Features
+
+- Bird identification with confidence scores
+- Region saved with each observation
+- Profile page listing your observations and identified birds
+- Bird ids' link to wikipedia
+- Search, follow and unfollow other users
+
+## Releases
+Check the [releases page](https://github.com/Ilse547/BirdID/releases) to download the latest release.
+Current Version: v1.0.0
+
+## Project structure
+
+```text
+BirdID/
+├── mobile/
+│   ├── pages/      # app pages
+│   ├── hooks/      # app hooks
+│   ├── App.js
+│   ├── config.js
+│   └── styles.js
+├── backend/
+│   ├── routes/     # API routes
+│   ├── middleware/ # API middleware
+│   ├── services/   # API BirdNET service
+│   ├── db/         # API DB connection
+│   └── server.js
+└── birdnet/        # Python virtual environment running birdNET
+```
+
 
 ## Goals:
 1. Users should be able to log in to save their recent sightings
