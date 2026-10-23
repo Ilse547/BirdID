@@ -17,6 +17,7 @@ import LoginPage from "./pages/Loginpage";
 import RegisterPage from "./pages/Registerpage";
 import ProfilePage from "./pages/Profilepage";
 import FollowerPage from "./pages/Followerpage";
+import ObservationsPage from "./pages/Observationspage";
 
 import { NavigationBar } from "expo-navigation-bar";
 import { StatusBar } from "expo-status-bar";
@@ -115,7 +116,7 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (screen !== "profile" || !token) {
+    if ((screen !== "profile" && screen !== "observations") || !token) {
       return;
     }
     fetch(`${API_URL}/recording/me`, {
@@ -190,9 +191,9 @@ export default function App() {
           <Text style={styles.headerTitle}>Bird ID</Text>
         </View>
 
-        <Pressable onPress={() => {setActiveTab(null); setScreen("home");}} style={({ pressed }) => [ styles.Secondarybutton,pressed && styles.SecondarybuttonPressed]}>
+        <Pressable onPress={() => {setActiveTab(null); setScreen("observations");}} style={({ pressed }) => [ styles.Secondarybutton,pressed && styles.SecondarybuttonPressed]}>
         <Text style={styles.SecondarybuttonText}>
-          Home
+          Observations
         </Text>
       </Pressable>
         </View>
@@ -205,6 +206,8 @@ export default function App() {
               <HelpScreen/>
             ) : screen === "followers" ? (
               <FollowerPage token={token} onSessionExpired={handleSessionExpired}/>
+            ) : screen === "observations" ? (
+              <ObservationsPage recordings={profileRecordings} onBack={() => setScreen("home")} />
             ) : screen === "profile" ? (
               <ProfilePage username={profileUsername} recordings={profileRecordings} onBack={() => setScreen("home")}/>
             ) : screen === "results" ? (

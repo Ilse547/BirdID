@@ -37,6 +37,7 @@ export default StyleSheet.create({
 		justifyContent: "center",
 		flexDirection: "row",
 		position: "relative",
+		marginTop: 25
 	},
 	content: {
 		flex: 1,
