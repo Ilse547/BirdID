@@ -11,6 +11,8 @@
 - [Features](#features)
 - [Releases](#releases)
 - [Project structure](#project-structure)
+- [Environment variables](#environment-variables)
+- [API endpoints](#api-endpoints)
 
 ## About
 Bird ID is an app that records bird sounds and identifies them using [BirdNET](https://github.com/birdnet-team/BirdNET-Analyzer) to analyze the sounds and give you the results
@@ -46,6 +48,40 @@ BirdID/
 └── birdnet/        # Python virtual environment running birdNET
 ```
 
+## Environment variables
+
+### `backend/.env`
+
+```env
+PORT=3000
+DB_USER=birdid_user
+DB_HOST=localhost
+DB_NAME=birdid
+DB_PASSWORD=change-me
+DB_PORT=5432
+JWT_SECRET=use-a-long-random-secret
+```
+
+### `mobile/.env`
+
+```env
+EXPO_PUBLIC_API_URL=http://<server-ip>:3000
+```
+
+## API endpoints
+
+| Endpoint | Auth | Description |
+| --- | :--: | --- |
+| `/` | ❌ | check |
+| `/auth/register` | ❌ | create account |
+| `/auth/login` | ❌ | login and receive a JWT |
+| `/upload` | ✅ | upload recording to run BirdNET |
+| `/recording/me` | ✅ | observations and identifications |
+| `/users/search?q=` | ✅ | search users by username |
+| `/users/following` | ✅ | followed users |
+| `/users/:userId` | ✅ | profile and observations |
+| `/users/:userId/follow` | ✅ | follow a user |
+| `/users/:userId/follow` | ✅ | unfollow a user |
 
 ## Goals:
 1. Users should be able to log in to save their recent sightings
@@ -55,13 +91,17 @@ BirdID/
 
 ## checklist
 
-- [ ] microphone recording
-- [ ] BirdNET integration
-- [ ] Express upload route
-- [ ] mobile upload
-- [ ] BirdNET integration
-- [ ] result screen
-- [ ] Login and registration
+- [x] microphone recording
+- [x] BirdNET integration
+- [x] Express upload route
+- [x] mobile upload
+- [x] result screen
+- [x] Login and registration
+- [x] location loging
+- [ ] Follow users
+- [ ] notifications
+- [ ] see other peoples profiles
+- [ ] view other peoples observations
 
 ## run the project
 1. in the ``` backend/ ``` folder run ``` node server.js ```
