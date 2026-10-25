@@ -1,9 +1,17 @@
 import { useState } from "react";
-import { Pressable, Text, View, ScrollView, Linking } from "react-native";
+import { Pressable, Text, View, ScrollView, Linking,Share } from "react-native";
 import styles from "../styles";
 
 export default function ObservationsPage({ recordings, onBack }) {
   const [selectedRecording, setSelectedRecording] = useState(null);
+
+  const handleShare = async () => {
+    if (!selectedRecording) { return;}
+    const lines = selectedRecording.results.map((result) => `${result.common_name} (${(Number(result.confidence) * 100).toFixed(1)}%)`);
+    const date = new Date(selectedRecording.created_at).toLocaleDateString("de-DE");
+    const message = `I identified these bird on ${date} in ${selectedRecording.location}:\n${lines.join("\n")}`;
+    await Share.share({ message });
+  };
 
   return (
     <View style={styles.recordingScreen}>
@@ -32,6 +40,9 @@ export default function ObservationsPage({ recordings, onBack }) {
               <Text style={styles.SecondarybuttonText}>
                 Back To Observations
               </Text>
+            </Pressable>
+            <Pressable style={styles.Primarybutton} onPress={handleShare}>
+              <Text style={styles.PrimarybuttonText}>Share observation</Text>
             </Pressable>
           </>
         ) : recordings.length === 0 ? (
