@@ -171,6 +171,17 @@ export default function App() {
     setAuthScreen("login");
   };
 
+  const handleLogout = async () => {
+    await AsyncStorage.multiRemove([TOKEN_KEY, USERNAME_KEY]);
+    setToken(null);
+    setProfileUsername("Profile");
+    setProfileRecordings([]);
+    setScreen("home");
+    setActiveTab(null);
+    setAuthMessage("");
+    setAuthScreen("login");
+  };
+
   if (!authReady) {
   return (
     <SafeAreaView style={styles.container}>
@@ -209,7 +220,7 @@ export default function App() {
             ) : screen === "observations" ? (
               <ObservationsPage recordings={profileRecordings} onBack={() => setScreen("home")} />
             ) : screen === "profile" ? (
-              <ProfilePage username={profileUsername} recordings={profileRecordings} onBack={() => setScreen("home")}/>
+              <ProfilePage username={profileUsername} recordings={profileRecordings} onBack={() => setScreen("home")} onLogout={handleLogout}/>
             ) : screen === "results" ? (
               <ResultPage results={birdnetResults} onBack={() => setScreen("recording")} />
             ) : screen === "recording" ? (

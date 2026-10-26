@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Pressable, Text, View, ScrollView, Linking} from "react-native";
 import styles from "../styles";
 
-export default function ProfilePage({ username, recordings, onBack }) {
+export default function ProfilePage({ username, recordings, onBack, onLogout}) {
   const allResults = recordings.flatMap((recording) => recording.results);
   const totalObservations = recordings.length;
   const uniqueBirds = new Set(allResults.map((result) => result.common_name)).size;
@@ -23,6 +23,9 @@ export default function ProfilePage({ username, recordings, onBack }) {
       {topBirds.map(([name, count]) => (
         <Text key={name}>{name} ({count}x)</Text>
       ))}
+      <Pressable style={[styles.Secondarybutton, {backgroundColor:"red", marginTop:"20"}]} onPress={onLogout}>
+        <Text style={styles.SecondarybuttonText}>logout</Text>
+      </Pressable>
     </View>
     </View>
   );
