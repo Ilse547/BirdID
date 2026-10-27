@@ -56,10 +56,16 @@ app.post("/upload", authenticateToken, upload.single("audio"), async (req, res) 
         `INSERT INTO identification_results
         (recording_id, common_name, scientific_name, confidence, start_seconds, end_seconds)
         VALUES ($1, $2, $3, $4, $5, $6)`,
-        [ recordingId, result[3], result[4], Number(result[6]), Number(result[1]), Number(result[2]) ]);
+        [ recordingId, result[7], result[8], Number(result[9]), Number(result[3]), Number(result[4]) ]);
     }
+    const resultsForApp = birdnetResults.map((result) => {
+      const appResult = [...result];
+      appResult[3] = result[7];
+      appResult[6] = Number(result[9]);
+      return appResult;
+    });
     console.log("BirdNET finished");
-    res.json({ message: "audio analyzed", results: birdnetResults });
+    res.json({ message: "audio analyzed", results: resultsForApp });
 
   } catch (error) {
 
