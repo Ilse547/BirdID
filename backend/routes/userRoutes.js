@@ -97,4 +97,59 @@ router.delete("/:userId/follow", authenticateToken, async (req, res) => {
   }
 });
 
+router.get("/:userId", authenticateToken, async (req, res) => {
+  try {
+    const userId = Number(req.params.userId);
+    if (!Number.isInteger(userId)) {
+      return res.status(400).json({ error: "user not found" });
+    }
+    const userResult = await db.query(
+      "SELECT id, username FROM users WHERE id = $1",
+      [userId]
+    );
+    if (userResult.rows.length === 0) {
+      return res.status(404).json({ error: "user not found" });
+    }
+    const result = await db.query(
+      `SELECT
+        r.id,
+        r.created_at,
+        r.region,
+        ir.common_name,
+        ir.scientific_name,
+        ir.confidence
+      FROM recordings r
+      LEFT JOIN identification_results ir
+        ON ir.recording_id = r.id
+      WHERE r.user_id = $1
+      ORDER BY r.created_at DESC`,
+      [userId]
+    );
+    const recordings = [];
+    for (const row of result.rows) {
+      let recording = recordings.find((item) => item.id === row.id);
+      if (!recording) {
+        recording = {
+          id: row.id,
+          created_at: row.created_at,
+          location: row.region || "location not found",
+          results: []
+        };
+        recordings.push(recording);
+      }
+      if (row.common_name) {
+        recording.results.push({
+          common_name: row.common_name,
+          scientific_name: row.scientific_name,
+          confidence: row.confidence
+        });
+      }
+    }
+    res.json({ user: userResult.rows[0], recordings });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "not able to load user" });
+  }
+});
+
 module.exports = router;
