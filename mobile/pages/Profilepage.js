@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Pressable, Text, View, ScrollView, Linking} from "react-native";
 import styles from "../styles";
 
-export default function ProfilePage({ username, recordings, onBack, onLogout}) {
+export default function ProfilePage({ username, recordings, onBack, onLogout, isOwnProfile = true, onViewObservations}) {
   const allResults = recordings.flatMap((recording) => recording.results);
   const totalObservations = recordings.length;
   const uniqueBirds = new Set(allResults.map((result) => result.common_name)).size;
@@ -15,7 +15,7 @@ export default function ProfilePage({ username, recordings, onBack, onLogout}) {
     .slice(0, 3);
   return (
     <View style={styles.recordingScreen}>
-      <Text style={[styles.title, {color:"#050505"}]}>Hello {username} !</Text>
+      <Text style={[styles.title, {color:"#050505"}]}>{isOwnProfile ? `Hello ${username} !` : `${username}'s profile`}</Text>
       <View style={{ alignItems: "center", marginBottom: 12 }}>
       <Text>observations: {totalObservations}</Text>
       <Text>Bird species identifiied: {uniqueBirds}</Text>
@@ -23,9 +23,12 @@ export default function ProfilePage({ username, recordings, onBack, onLogout}) {
       {topBirds.map(([name, count]) => (
         <Text key={name}>{name} ({count}x)</Text>
       ))}
-      <Pressable style={[styles.Secondarybutton, {backgroundColor:"red", marginTop:"20"}]} onPress={onLogout}>
+      {!isOwnProfile && (<Pressable style={styles.Primarybutton} onPress={onViewObservations}>
+        <Text style={styles.PrimarybuttonText}>view observations</Text>
+      </Pressable>)}
+      {isOwnProfile && (<Pressable style={[styles.Secondarybutton, {backgroundColor:"red", marginTop:"20"}]} onPress={onLogout}>
         <Text style={styles.SecondarybuttonText}>logout</Text>
-      </Pressable>
+      </Pressable>)}
     </View>
     </View>
   );

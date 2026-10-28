@@ -45,6 +45,7 @@ export default function App() {
   const [profileRecordings, setProfileRecordings] = useState([]);
   const [profileUsername, setProfileUsername] = useState("Profile");
   const [authReady, setAuthReady] = useState(false);
+  const [viewedUser, setViewedUser] = useState(null);
 
   const handleLogin = async () => {
     try{
@@ -181,7 +182,23 @@ export default function App() {
     setAuthMessage("");
     setAuthScreen("login");
   };
-
+  const openUserProfile = async (userId, username) => {
+    try {
+      const response = await fetch(`${API_URL}/users/${userId}`, {headers: { Authorization: `Bearer ${token}` }});
+      if (response.status === 403) {
+        await handleSessionExpired();
+        return;
+      }
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error);
+      }
+      setViewedUser({ id: userId, username, recordings: data.recordings || [] });
+      setScreen("userProfile");
+    } catch (error) {
+      console.error(error);
+    }
+  };
   if (!authReady) {
   return (
     <SafeAreaView style={styles.container}>
@@ -216,9 +233,13 @@ export default function App() {
             ) : activeTab === "help" ? (
               <HelpScreen/>
             ) : screen === "followers" ? (
-              <FollowerPage token={token} onSessionExpired={handleSessionExpired}/>
+              <FollowerPage token={token} onSessionExpired={handleSessionExpired} onViewProfile={openUserProfile}/>
             ) : screen === "observations" ? (
               <ObservationsPage recordings={profileRecordings} onBack={() => setScreen("home")} />
+            ) : screen === "userProfile" && viewedUser ? (
+              <ProfilePage username={viewedUser.username} recordings={viewedUser.recordings} onBack={() => setScreen("followers")} isOwnProfile={false} onViewObservations={()=>setScreen("userObservations")}/>
+            ) : screen === "userObservations" && viewedUser ? (
+              <ObservationsPage recordings={viewedUser.recordings} onBack={() => setScreen("userProfile")}/>
             ) : screen === "profile" ? (
               <ProfilePage username={profileUsername} recordings={profileRecordings} onBack={() => setScreen("home")} onLogout={handleLogout}/>
             ) : screen === "results" ? (

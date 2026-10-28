@@ -3,7 +3,7 @@ import {Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import styles from "../styles";
 import { API_URL } from "../config";
 
-export default function FollowerPage({ token, onSessionExpired}) {
+export default function FollowerPage({ token, onSessionExpired, onViewProfile}) {
   const [query, setQuery] = useState("");
   const [users, setUsers] = useState([]);
   const [following, setFollowing] = useState([]);
@@ -102,8 +102,9 @@ export default function FollowerPage({ token, onSessionExpired}) {
       {message !== "" && (<Text style={styles.messageError}>{message}</Text>)}
       {users.map((user) => (
         <View key={user.id} style={styles.userRow}>
-          <Text style={styles.userName}>{user.username}</Text>
-
+          <Pressable style={[styles.Secondarybutton, {width: 200,marginBottom:5}]}onPress={() => onViewProfile(user.id, user.username)}>
+            <Text style={styles.SecondarybuttonText}>{user.username}</Text>
+          </Pressable>
           <Pressable style={styles.Primarybutton} onPress={() => toggleFollow(user)}>
             <Text style={styles.PrimarybuttonText}>
               {user.is_following ? "Following" : "Follow"}
@@ -118,9 +119,11 @@ export default function FollowerPage({ token, onSessionExpired}) {
         <Text>You are not following anyone yet.</Text>
       ) : (
         following.map((user) => (
-          <Text key={user.id} style={styles.followingUser}>
-            {user.username}
-          </Text>
+          <Pressable style={[styles.Secondarybutton, {marginBottom:5}]}key={user.id} onPress={() => onViewProfile(user.id, user.username)}>
+            <Text style={styles.SecondarybuttonText}>
+              {user.username}
+            </Text>
+          </Pressable>
         ))
       )}
     </ScrollView>
