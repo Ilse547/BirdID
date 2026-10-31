@@ -11,6 +11,11 @@
 - [Features](#features)
 - [Releases](#releases)
 - [Project structure](#project-structure)
+- [Getting started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [BirdNET](#birdnet)
+  - [Backend](#backend)
+  - [Mobile app](#mobile-app)
 - [Environment variables](#environment-variables)
 - [API endpoints](#api-endpoints)
 
@@ -47,6 +52,40 @@ BirdID/
 │   └── server.js
 └── birdnet/        # Python virtual environment running birdNET
 ```
+## Getting started
+### Prerequisites
+- Node.js 20+
+- PostgreSQL 17
+- Python 3 and FFmpeg
+- An Android phone (or emulator)
+
+### BirdNET
+```bash
+mkdir -p birdnet
+python3 -m venv birdnet/.venv
+birdnet/.venv/bin/python -m pip install birdnet-analyzer
+```
+```bash
+birdnet/.venv/bin/python -m birdnet_analyzer.analyze --help
+```
+### Backend
+
+```bash
+cd backend
+npm install
+node server.js
+```
+> [!WARNING]
+> Don't forget to set up the .env
+
+### Mobile app
+```bash
+cd mobile
+npm install
+npx expo start -c
+```
+> [!WARNING]
+> Don't forget to set up the .env
 
 ## Environment variables
 
@@ -89,7 +128,7 @@ EXPO_PUBLIC_API_URL=http://<server-ip>:3000
 3. users should be able to record their sourroundings and ID birds by their chant
 4. users should be be able to share their identifications
 
-## checklist
+## roadmap
 
 - [x] microphone recording
 - [x] BirdNET integration
@@ -98,10 +137,13 @@ EXPO_PUBLIC_API_URL=http://<server-ip>:3000
 - [x] result screen
 - [x] Login and registration
 - [x] location loging
-- [ ] Follow users
+- [x] Follow users
 - [ ] notifications
-- [ ] see other peoples profiles
-- [ ] view other peoples observations
+- [x] see other peoples profiles
+- [x] view other peoples observations
+- [ ] observation chaching
+- [ ] API minimum version
+- [ ] add link to psecific observations
 
 ## run the project
 1. in the ``` backend/ ``` folder run ``` node server.js ```
