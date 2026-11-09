@@ -3,6 +3,10 @@
 # Bird ID
 **Record Bird sounds to identify them**
 
+![Node.js](https://img.shields.io/badge/Node.js-20-339933?logo=nodedotjs&logoColor=white)
+![React Native](https://img.shields.io/badge/React_Native-Expo-61DAFB?logo=react&logoColor=black)
+![Expo](https://img.shields.io/badge/Expo-000020?logo=expo&logoColor=white)
+![BirdNET](https://img.shields.io/badge/BirdNET-Analyzer-8BC34A)
 </div>
 
 ## Table of contents
@@ -10,14 +14,17 @@
 - [About](#about)
 - [Features](#features)
 - [Releases](#releases)
+- [Architecture](#architecture)
 - [Project structure](#project-structure)
 - [Getting started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [BirdNET](#birdnet)
   - [Backend](#backend)
   - [Mobile app](#mobile-app)
+  - [Building the APK](#building-the-apk)
 - [Environment variables](#environment-variables)
 - [API endpoints](#api-endpoints)
+- [Roadmap](#roadmap)
 
 ## About
 Bird ID is an app that records bird sounds and identifies them using [BirdNET](https://github.com/birdnet-team/BirdNET-Analyzer) to analyze the sounds and give you the results
@@ -33,6 +40,21 @@ Bird ID is an app that records bird sounds and identifies them using [BirdNET](h
 ## Releases
 Check the [releases page](https://github.com/Ilse547/BirdID/releases) to download the latest release.
 Current Version: v1.0.0
+
+## Tech stack
+Mobile : React Native  
+Backend : NodeJS and Express  
+Database : PostgreSQ  
+Audio analysis : BirdNET Analyzer  
+
+## Architecture
+```mermaid
+flowchart LR
+    Phone["App<br/>(React Native)"] -- "HTTP" --> API["Express API"]
+    API --> DB[("PostgreSQL")]
+    API --> FF["FFmpeg<br/>(m4a to wav)"]
+    FF --> BN["BirdNET Analyzer"]
+```
 
 ## Project structure
 
@@ -86,6 +108,18 @@ npx expo start -c
 ```
 > [!WARNING]
 > Don't forget to set up the .env
+
+### Building the APK
+```bash
+cd mobile
+npx expo prebuild --clean
+cd android
+./gradlew assembleRelease --no-build-cache
+```
+The APK will be at:
+```text
+mobile/android/app/build/outputs/apk/release/app-release.apk
+```
 
 ## Environment variables
 
@@ -144,31 +178,3 @@ EXPO_PUBLIC_API_URL=http://<server-ip>:3000
 - [ ] observation chaching
 - [ ] API minimum version
 - [ ] add link to psecific observations
-
-## run the project
-1. in the ``` backend/ ``` folder run ``` node server.js ```
-2. in the ``` mobile/ ``` folder run ``` npx expo start --lan ```
-
-## Compiklw into apk
-1. inside of ``` mobile/ ``` run ``` npx expo prebuild --platform android ```  
-2. inside of ``` mobile/android ``` run ``` ./gradlew clean ``` to remove old build files  
-3. then run ``` ./gradlew assembleRelease ``` to build the apk  
-
-# BirdNET setup
-
-BirdNET-Analyzer is used by the backend to analyse and identify birds  
-
-## Local setup
-
-Python 3.11 is required to run BirdNET-Analyzer  
-
-Run these commands to install it:  
-``` cd ~/dev/BirdID/birdnet ```
-
-``` ~/.pyenv/versions/3.11.16/bin/python -m venv .venv ```
-
-``` git clone https://github.com/birdnet-team/BirdNET-Analyzer.git ```
-
-``` cd BirdNET-Analyzer ```
-``` ../.venv/bin/python -m pip install --upgrade pip ```
-``` ../.venv/bin/python -m pip install . ```
