@@ -49,10 +49,10 @@ export default StyleSheet.create({
 
 	//BUTTONS
 	bottomButton: {
-		width: 120,
-		height: 120 ,
+		width: 220,
+		height: 220 ,
 		backgroundColor: "#E63946",
-		borderRadius: 60,
+		borderRadius: 360,
 		alignItems: "center",
 		justifyContent: "center"
 	},

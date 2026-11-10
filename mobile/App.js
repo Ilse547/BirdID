@@ -261,9 +261,11 @@ export default function App() {
                 }}
               />
             ) : (
-              <Text>
-                Welcome to BirdID
-              </Text>
+              <Pressable
+                onPress={() => {setActiveTab(null); setAutoStartRecording(true); setScreen("recording"); }}
+                style={({ pressed }) => [styles.bottomButton,{marginTop: 200}, pressed && styles.bottomButtonPressed]}>
+                <Text style={styles.bottomButtonIcon}>🎙</Text>
+              </Pressable>
             )}
           </View>
         </View>
@@ -282,11 +284,6 @@ export default function App() {
           <Text style={styles.BottomBarbuttonText}>
             👥
           </Text>
-        </Pressable>
-        <Pressable
-          onPress={() => {setActiveTab(null); setAutoStartRecording(true); setScreen("recording"); }}
-          style={({ pressed }) => [styles.bottomButton, pressed && styles.bottomButtonPressed]}>
-          <Text style={styles.bottomButtonIcon}>🎙</Text>
         </Pressable>
         <Pressable onPress={() => {setActiveTab(null); setScreen("profile");}} style={[styles.BottomBarbutton, { right: 20 }]}>
           <Text style={styles.BottomBarbuttonText}>👤</Text>
