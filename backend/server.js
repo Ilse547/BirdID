@@ -126,6 +126,43 @@ app.get("/recording/me", authenticateToken, async (req, res) => {
   }
 });
 
+app.get("/recording/explore", authenticateToken, async (req, res) => {
+  try {
+    const result = await db.query(
+      `WITH latest AS (SELECT r.id, r.created_at, r.region, u.username FROM recordings r JOIN users u ON u.id = r.user_id ORDER BY r.created_at DESC LIMIT 200)
+      SELECT l.id ,l.created_at,l.region, l.username,ir.common_name, ir.scientific_name,ir.confidence
+      FROM latest l
+      LEFT JOIN identification_results ir ON ir.recording_id = l.id
+      ORDER BY l.created_at DESC`
+    );
+    const recordings = [];
+    for (const row of result.rows) {
+      let recording = recordings.find((item) => item.id === row.id);
+      if (!recording) {
+        recording = {
+          id: row.id,
+          username: row.username,
+          created_at: row.created_at,
+          location: row.region || "location not found",
+          results: []
+        };
+        recordings.push(recording);
+      }
+      if (row.common_name) {
+        recording.results.push({
+          common_name: row.common_name,
+          scientific_name: row.scientific_name,
+          confidence: row.confidence
+        });
+      }
+    }
+    res.json({ recordings });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "cannot load obvservations" });
+  }
+});
+
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Backend running at http://localhost:${PORT}`);
 });

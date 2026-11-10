@@ -18,6 +18,7 @@ import RegisterPage from "./pages/Registerpage";
 import ProfilePage from "./pages/Profilepage";
 import FollowerPage from "./pages/Followerpage";
 import ObservationsPage from "./pages/Observationspage";
+import ExplorePage from "./pages/Explorepage";
 
 import { NavigationBar } from "expo-navigation-bar";
 import { StatusBar } from "expo-status-bar";
@@ -34,18 +35,17 @@ export default function App() {
   const [screen, setScreen] = useState("home");
   const [birdnetResults, setBirdnetResults] = useState([]);
   const [autoStartRecording, setAutoStartRecording] = useState(false);
-
   const [authScreen, setAuthScreen] = useState("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
-
   const [token, setToken] = useState(null);
   const [authMessage, setAuthMessage] = useState("");
   const [profileRecordings, setProfileRecordings] = useState([]);
   const [profileUsername, setProfileUsername] = useState("Profile");
   const [authReady, setAuthReady] = useState(false);
   const [viewedUser, setViewedUser] = useState(null);
+  const [exploreRecordings, setExploreRecordings] = useState([]);
 
   const handleLogin = async () => {
     try{
@@ -199,6 +199,25 @@ export default function App() {
       console.error(error);
     }
   };
+  const loadExplore = async () => {
+    try {
+      const response = await fetch(`${API_URL}/recording/explore`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (response.status === 403) {
+        await handleSessionExpired();
+        return;
+      }
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error);
+      }
+      setExploreRecordings(data.recordings || []);
+      setScreen("explore");
+    } catch (error) {
+      console.error(error);
+    }
+  };
   if (!authReady) {
   return (
     <SafeAreaView style={styles.container}>
@@ -249,18 +268,12 @@ export default function App() {
                 token={token}
                 autoStart={autoStartRecording}
                 onSessionExpired={handleSessionExpired}
-                onResults={(results) => {
-                  setAutoStartRecording(false);
-                  setBirdnetResults(results);
-                  setScreen("results");
-                }}
-                onBack={() => {
-                  setAutoStartRecording(false);
-                  setActiveTab(null);
-                  setScreen("home");
-                }}
+                onResults={(results) => {setAutoStartRecording(false); setBirdnetResults(results); setScreen("results");}}
+                onBack={() => { setAutoStartRecording(false); setActiveTab(null); setScreen("home");}}
               />
-            ) : (
+              ) : screen === "explore" ? (
+                <ExplorePage recordings={exploreRecordings} onBack={() => setScreen("home")} />
+              ) : (
               <Pressable
                 onPress={() => {setActiveTab(null); setAutoStartRecording(true); setScreen("recording"); }}
                 style={({ pressed }) => [styles.bottomButton,{marginTop: 200}, pressed && styles.bottomButtonPressed]}>
@@ -270,22 +283,25 @@ export default function App() {
           </View>
         </View>
       <View style={styles.bottomBar}>
-        <Pressable onPress={() => {setActiveTab(null); setScreen("home");}} style={[ styles.BottomBarbutton, { left: 75 }]}>
+        <Pressable onPress={() => {setActiveTab(null); setScreen("home");}} style={[ styles.BottomBarbutton, { left: "10%", marginLeft: -22 }]}>
           <Text style={styles.BottomBarbuttonText}>
             🏠
           </Text>
         </Pressable>
-        <Pressable onPress={() => {setActiveTab("help"); setScreen("home"); }} style={[styles.BottomBarbutton, { left: 20 }]}>
+        <Pressable onPress={() => {setActiveTab("help"); setScreen("home"); }} style={[styles.BottomBarbutton, { left: "30%", marginLeft: -22 }]}>
           <Text style={styles.BottomBarbuttonText}>
             ❓
           </Text>
         </Pressable>
-        <Pressable onPress={() => {setActiveTab(null); setScreen("followers");}} style={[styles.BottomBarbutton, { right: 80 }]}>
+        <Pressable onPress={loadExplore} style={[styles.BottomBarbutton, { left: "50%", marginLeft: -22 }]}>
+          <Text style={styles.BottomBarbuttonText}>🔍</Text>
+        </Pressable>
+        <Pressable onPress={() => {setActiveTab(null); setScreen("followers");}} style={[styles.BottomBarbutton, { left: "70%", marginLeft: -22 }]}>
           <Text style={styles.BottomBarbuttonText}>
             👥
           </Text>
         </Pressable>
-        <Pressable onPress={() => {setActiveTab(null); setScreen("profile");}} style={[styles.BottomBarbutton, { right: 20 }]}>
+        <Pressable onPress={() => {setActiveTab(null); setScreen("profile");}} style={[styles.BottomBarbutton, { left: "90%", marginLeft: -22 }]}>
           <Text style={styles.BottomBarbuttonText}>👤</Text>
         </Pressable>
       </View>
