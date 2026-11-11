@@ -26,6 +26,7 @@ import { API_URL } from "./config";
 
 const TOKEN_KEY = "birdid_token";
 const USERNAME_KEY = "birdid_username";
+const OBSERVATIONS_KEY = "birdid_observations";
 
 export default function App() {
   const [message, setMessage] = useState("Hello World");
@@ -133,6 +134,7 @@ export default function App() {
     .then((data) => {
       if (data) {
         setProfileRecordings(data.recordings || []);
+        AsyncStorage.setItem(OBSERVATIONS_KEY, JSON.stringify(data.recordings || []));
       }
     })
     .catch((error) => {
@@ -148,6 +150,10 @@ export default function App() {
         if (savedToken) {
           setToken(savedToken);
           setProfileUsername(savedUsername || "Profile");
+          const savedObservations = await AsyncStorage.getItem(OBSERVATIONS_KEY);
+          if (savedObservations) {
+            setProfileRecordings(JSON.parse(savedObservations));
+          }
           setAuthScreen(null);
         }
       } catch (error) {
@@ -160,10 +166,7 @@ export default function App() {
   }, []);
 
   const handleSessionExpired = async () => {
-    await AsyncStorage.multiRemove([
-      TOKEN_KEY,
-      USERNAME_KEY
-    ]);
+    await AsyncStorage.multiRemove([TOKEN_KEY, USERNAME_KEY,OBSERVATIONS_KEY]);
     setToken(null);
     setProfileUsername("Profile");
     setScreen("home");
@@ -173,7 +176,7 @@ export default function App() {
   };
 
   const handleLogout = async () => {
-    await AsyncStorage.multiRemove([TOKEN_KEY, USERNAME_KEY]);
+    await AsyncStorage.multiRemove([TOKEN_KEY, USERNAME_KEY, OBSERVATIONS_KEY]);
     setToken(null);
     setProfileUsername("Profile");
     setProfileRecordings([]);

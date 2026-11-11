@@ -15,6 +15,7 @@
 - [Features](#features)
 - [Releases](#releases)
 - [Architecture](#architecture)
+- [Database](#database)
 - [Project structure](#project-structure)
 - [Getting started](#getting-started)
   - [Prerequisites](#prerequisites)
@@ -54,6 +55,45 @@ flowchart LR
     API --> DB[("PostgreSQL")]
     API --> FF["FFmpeg<br/>(m4a to wav)"]
     FF --> BN["BirdNET Analyzer"]
+```
+## Database
+```mermaid
+erDiagram
+    USERS {
+        int id PK
+        text username
+        text email
+        text password_hash
+    }
+    RECORDINGS {
+        int id PK
+        int user_id FK
+        text original_name
+        text stored_path
+        double latitude
+        double longitude
+        text region
+        timestamptz created_at
+    }
+    IDENTIFICATION_RESULTS {
+        int id PK
+        int recording_id FK
+        text common_name
+        text scientific_name
+        numeric confidence
+        numeric start_seconds
+        numeric end_seconds
+    }
+    USER_FOLLOWS {
+        int follower_id PK, FK
+        int following_id PK, FK
+        timestamptz created_at
+    }
+
+    USERS ||--o{ RECORDINGS : "uploads (one to many)"
+    RECORDINGS ||--o{ IDENTIFICATION_RESULTS : "has (one to many)"
+    USERS ||--o{ USER_FOLLOWS : "follower (many to many)"
+    USERS ||--o{ USER_FOLLOWS : "following (many to many)"
 ```
 
 ## Project structure
@@ -178,3 +218,5 @@ EXPO_PUBLIC_API_URL=http://<server-ip>:3000
 - [ ] observation chaching
 - [ ] API minimum version
 - [ ] add link to psecific observations
+- [x] cache observations locally
+
