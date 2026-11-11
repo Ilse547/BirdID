@@ -27,6 +27,7 @@ app.post("/upload", authenticateToken, upload.single("audio"), async (req, res) 
     return res.status(400).json({ error: "no audio wsa uploaded" });
   }
   console.log("Upload received:", req.file.originalname);
+  let client;
   try {
     const birdnetResults = await analyzeAudio( req.file.path, req.file.originalname );
     const latitude = req.body.latitude
@@ -36,7 +37,9 @@ app.post("/upload", authenticateToken, upload.single("audio"), async (req, res) 
       ? Number(req.body.longitude)
       : null;
     const region = req.body.region || null;
-    const recordingResult = await db.query(
+    client = await db.connect();
+    await client.query("BEGIN");
+    const recordingResult = await client.query(
       `INSERT INTO recordings
       (user_id, original_name, stored_path, latitude, longitude, region)
       VALUES ($1, $2, $3, $4, $5, $6)
@@ -52,7 +55,7 @@ app.post("/upload", authenticateToken, upload.single("audio"), async (req, res) 
     );
     const recordingId = recordingResult.rows[0].id;
     for (const result of birdnetResults) {
-      await db.query(
+      await client.query(
         `INSERT INTO identification_results
         (recording_id, common_name, scientific_name, confidence, start_seconds, end_seconds)
         VALUES ($1, $2, $3, $4, $5, $6)`,
@@ -64,11 +67,16 @@ app.post("/upload", authenticateToken, upload.single("audio"), async (req, res) 
       appResult[6] = Number(result[9]);
       return appResult;
     });
+    await client.query("COMMIT");
+    client.release();
+    client = null;
     console.log("BirdNET finished");
     res.json({ message: "audio analyzed", results: resultsForApp });
-
   } catch (error) {
-
+    if (client) {
+      await client.query("ROLLBACK");
+      client.release();
+    }
     console.error(error);
     res.status(500).json({ error: "BirdNET failed" });
   }
