@@ -1,4 +1,4 @@
-import { Pressable, Text, View } from "react-native";
+import { Pressable, Text, View, Linking} from "react-native";
 import { useEffect, useState } from "react";
 import { setAudioModeAsync, useAudioPlayer, useAudioPlayerStatus} from "expo-audio";
 import { fetch as expoFetch } from "expo/fetch";
@@ -14,7 +14,9 @@ export default function Recordingpage({ onBack, onResults, autoStart, token,onSe
     error,
     startRecording,
     stopRecording,
-    location
+    location,
+    micBlocked,
+    locationBlocked
   } = useBirdRecording();
   const totalSeconds = Math.floor((durationMillis || 0) / 1000);
   const minutes = Math.floor(totalSeconds / 60).toString().padStart(2, "0");
@@ -122,6 +124,16 @@ const handleUpload = async () => {
           <Text style={styles.PrimarybuttonText}>
             Stop recording
           </Text>
+        </Pressable>
+      )}
+      {micBlocked && (
+        <Pressable style={[styles.Primarybutton, {width: 250}]} onPress={() => Linking.openSettings()}>
+          <Text style={styles.PrimarybuttonText}>open setting</Text>
+        </Pressable>
+      )}
+      {locationBlocked && (
+        <Pressable style={[styles.Secondarybutton, {width: 250}]} onPress={() => Linking.openSettings()}>
+          <Text style={styles.SecondarybuttonText}>open settings</Text>
         </Pressable>
       )}
       {error && (

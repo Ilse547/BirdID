@@ -14,28 +14,38 @@ export default function useBirdRecording() {
     const [error, setError] = useState(null);
     const [recordingUri, setRecordingUri] = useState(null);
     const [location, setLocation] = useState(null);
+    const [micBlocked, setMicBlocked] = useState(false);
+    const [locationBlocked, setLocationBlocked] = useState(false);
     const startRecording = async () => {
         try {
             setError(null);
             setRecordingUri(null);
+            setMicBlocked(false);
+            setLocationBlocked(false);
             const permission = await AudioModule.requestRecordingPermissionsAsync();
             if(!permission.granted) {
                 setError("Microphone permission declined");
+                setMicBlocked(!permission.canAskAgain);
                 return false;
             }
-            const locationPermission =
-            await Location.requestForegroundPermissionsAsync();
-            if (locationPermission.granted) {
-                const currentLocation = await Location.getCurrentPositionAsync({
-                    accuracy: Location.Accuracy.Balanced
-                });
-                const latitude = currentLocation.coords.latitude;
-                const longitude = currentLocation.coords.longitude;
-                const addresses = await Location.reverseGeocodeAsync({latitude, longitude});
-                const address = addresses[0];
-                setLocation({ latitude, longitude, region: address?.region || address?.subregion || null});
-            } else {
-            setLocation(null);
+            try{
+                const locationPermission = await Location.requestForegroundPermissionsAsync();
+                if (locationPermission.granted) {
+                    const currentLocation = await Location.getCurrentPositionAsync({
+                        accuracy: Location.Accuracy.Balanced
+                    });
+                    const latitude = currentLocation.coords.latitude;
+                    const longitude = currentLocation.coords.longitude;
+                    const addresses = await Location.reverseGeocodeAsync({latitude, longitude});
+                    const address = addresses[0];
+                    setLocation({ latitude, longitude, region: address?.region || address?.subregion || null});
+                } else {
+                setLocationBlocked(!locationPermission.canAskAgain);
+                setLocation(null);
+                }
+            } catch (locationError) {
+                console.error(locationError);
+                setLocation(null);
             }
             await setAudioModeAsync({
                 allowsRecording: true,
@@ -72,6 +82,8 @@ export default function useBirdRecording() {
         error,
         startRecording,
         stopRecording,
-        location
+        location,
+        micBlocked,
+        locationBlocked,
     };
 }
