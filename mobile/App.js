@@ -47,6 +47,7 @@ export default function App() {
   const [authReady, setAuthReady] = useState(false);
   const [viewedUser, setViewedUser] = useState(null);
   const [exploreRecordings, setExploreRecordings] = useState([]);
+  const [stats, setStats] = useState(null);
 
   const handleLogin = async () => {
     try{
@@ -141,7 +142,17 @@ export default function App() {
       console.error(error);
     });
   }, [screen, token]);
-
+  useEffect(() => {
+    if (screen !== "profile" || !token) {
+      return;
+    }
+    fetch(`${API_URL}/stats/me`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((data) => setStats(data))
+      .catch((error) => console.error(error));
+  }, [screen, token]);
   useEffect(() => {
     const restoreLogin = async () => {
       try {
@@ -263,7 +274,7 @@ export default function App() {
             ) : screen === "userObservations" && viewedUser ? (
               <ObservationsPage recordings={viewedUser.recordings} onBack={() => setScreen("userProfile")}/>
             ) : screen === "profile" ? (
-              <ProfilePage username={profileUsername} recordings={profileRecordings} onBack={() => setScreen("home")} onLogout={handleLogout}/>
+              <ProfilePage username={profileUsername} recordings={profileRecordings} onBack={() => setScreen("home")} onLogout={handleLogout}stats={stats}/>
             ) : screen === "results" ? (
               <ResultPage results={birdnetResults} onBack={() => setScreen("recording")} />
             ) : screen === "recording" ? (
