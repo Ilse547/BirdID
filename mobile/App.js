@@ -27,6 +27,7 @@ import { API_URL } from "./config";
 const TOKEN_KEY = "birdid_token";
 const USERNAME_KEY = "birdid_username";
 const OBSERVATIONS_KEY = "birdid_observations";
+const APP_VERSION = "1.0.0";
 
 export default function App() {
   const [message, setMessage] = useState("Hello World");
@@ -232,6 +233,39 @@ export default function App() {
       console.error(error);
     }
   };
+  const [versionOk, setVersionOk] = useState(true);
+  const [minAppVersion, setMinAppVersion] = useState(null);
+  const isVersionOlder = (current, minimum) => {
+    const a = current.split(".").map(Number);
+    const b = minimum.split(".").map(Number);
+    for (let i = 0; i < 3; i++) {
+      const x = a[i] || 0;
+      const y = b[i] || 0;
+      if (x < y) return true;
+      if (x > y) return false;
+    }
+    return false;
+  };
+
+  useEffect(() => {
+    fetch(`${API_URL}/app/version`)
+      .then((response) => response.json())
+      .then((data) => {
+        setMinAppVersion(data.minAppVersion);
+        setVersionOk(!isVersionOlder(APP_VERSION, data.minAppVersion));
+      })
+      .catch(() => {});
+  }, []);
+  if (!versionOk) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.authContainer}>
+          <Text style={styles.authTitle}>You need to update</Text>
+          <Text style={{ textAlign:"center"}}>The app is outdated, update to at least {minAppVersion}</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
   if (!authReady) {
   return (
     <SafeAreaView style={styles.container}>

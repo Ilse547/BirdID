@@ -170,7 +170,9 @@ app.get("/recording/explore", authenticateToken, async (req, res) => {
     res.status(500).json({ error: "cannot load obvservations" });
   }
 });
-
+app.get("/app/version", (req, res) => {
+  res.json({ minAppVersion: "1.0.0" });
+});
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Backend running at http://localhost:${PORT}`);
 });
