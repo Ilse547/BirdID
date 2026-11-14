@@ -216,7 +216,7 @@ EXPO_PUBLIC_API_URL=http://<server-ip>:3000
 - [x] see other peoples profiles
 - [x] view other peoples observations
 - [ ] observation chaching
-- [ ] API minimum version
+- [x] API minimum version
 - [ ] add link to psecific observations
 - [x] cache observations locally
 
