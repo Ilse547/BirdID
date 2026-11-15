@@ -1,13 +1,13 @@
 # BirdID setup
 This document describes how to setup BirdID on a lcoal environment.
 
-## 1 Requirements:
+## 1. Requirements:
 make sure these are installed on your computer
 - NodeJS
 - PostgreSQL
 - Python 3.11
 -
-## 2 Clone the Repo:
+## 2. Clone the Repo:
 ```bash
 git clone https://github.com/Ilse547/BirdID.git
 cd BirdID
@@ -18,7 +18,7 @@ The project has 3 subfolders
 - `backend/`: the Express API
 - `birdnet/`: the Python environment for BirdNET
 
-## 3 Setup the DB
+## 3. Setup the DB
 1. Install PostgreSQL and create a database user and a database:
 ```
 CREATE USER birdid_user WITH PASSWORD 'your-strong-password';
@@ -26,7 +26,7 @@ CREATE DATABASE birdid OWNER birdid_user;
 ```
 2. Create the tables `users`, `recordings`, `identification_results` and `user_follows`.
 
-## 4 COnfigure the backend
+## 4. COnfigure the backend
 create the .env in the backend root
 ```
 PORT=3000
@@ -56,3 +56,31 @@ cd BirdNET-Analyzer
 ../.venv/bin/python -m pip install --upgrade pip
 ../.venv/bin/python -m pip install .
 ```
+
+## 6. Configure the MObile app
+
+1. Find the IP address of your computer on the local network ex: `192.168.1.20`.
+2. Create the file `mobile/.env`:
+```
+EXPO_PUBLIC_API_URL=http://192.168.1.20:3000
+```
+
+3. Install the dependencies:
+```bash
+cd mobile
+npm install
+```
+
+your phone must be on the same Wifi network as the computer
+
+## 8. Build the release APK
+
+Run these commands from `mobile/`:
+
+```bash
+npx expo prebuild --clean
+cd android
+./gradlew assembleRelease --no-build-cache
+```
+The APK is created in `mobile/android/app/build/outputs/apk/release/`.
+The app allows plain HTTP traffic because the backend runs on the local network without HTTPS, only use this on a trusted network
