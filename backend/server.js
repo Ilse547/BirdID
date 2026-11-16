@@ -170,6 +170,52 @@ app.get("/recording/explore", authenticateToken, async (req, res) => {
     res.status(500).json({ error: "cannot load obvservations" });
   }
 });
+
+app.get("/recording/feed", authenticateToken, async (req, res) => {
+  try {
+    const result = await db.query(
+      `WITH feed AS (
+        SELECT r.id, r.created_at, r.region, u.username
+        FROM recordings r
+        JOIN users u ON u.id = r.user_id
+        WHERE EXISTS (SELECT 1 FROM user_follows f WHERE f.follower_id = $1 AND f.following_id = r.user_id )
+        ORDER BY r.created_at DESC
+        LIMIT 100
+      )
+      SELECT feed.id, feed.created_at, feed.region,feed.username, ir.common_name, ir.scientific_name,ir.confidence
+      FROM feed
+      LEFT JOIN identification_results ir ON ir.recording_id = feed.id
+      ORDER BY feed.created_at DESC`,
+      [req.user.userId]
+    );
+    const recordings = [];
+    for (const row of result.rows) {
+      let recording = recordings.find((item) => item.id === row.id);
+      if (!recording) {
+        recording = {
+          id: row.id,
+          username: row.username,
+          created_at: row.created_at,
+          location: row.region || "location not found",
+          results: []
+        };
+        recordings.push(recording);
+      }
+      if (row.common_name) {
+        recording.results.push({
+          common_name: row.common_name,
+          scientific_name: row.scientific_name,
+          confidence: row.confidence
+        });
+      }
+    }
+    res.json({ recordings });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "cannot to load feed" });
+  }
+});
+
 app.get("/app/version", (req, res) => {
   res.json({ minAppVersion: "1.0.0" });
 });

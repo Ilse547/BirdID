@@ -49,6 +49,7 @@ export default function App() {
   const [viewedUser, setViewedUser] = useState(null);
   const [exploreRecordings, setExploreRecordings] = useState([]);
   const [stats, setStats] = useState(null);
+  const [feedRecordings, setFeedRecordings] = useState([]);
 
   const handleLogin = async () => {
     try{
@@ -266,6 +267,23 @@ export default function App() {
       </SafeAreaView>
     );
   }
+  const loadFeed = async () => {
+    try {
+      const response = await fetch(`${API_URL}/recording/feed`, {headers: { Authorization: `Bearer ${token}`}});
+      if (response.status === 403) {
+        await handleSessionExpired();
+        return;
+      }
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error);
+      }
+      setFeedRecordings(data.recordings || []);
+      setScreen("feed");
+    } catch (error) {
+      console.error(error);
+    }
+  };
   if (!authReady) {
   return (
     <SafeAreaView style={styles.container}>
@@ -290,6 +308,9 @@ export default function App() {
         <Text style={styles.SecondarybuttonText}>
           Observations
         </Text>
+      </Pressable>
+      <Pressable onPress={loadFeed} style={({ pressed }) => [styles.Secondarybutton, { marginLeft: 8 }, pressed && styles.SecondarybuttonPressed]}>
+        <Text style={styles.SecondarybuttonText}>Feed</Text>
       </Pressable>
         </View>
           <View style={styles.mainContent}>
@@ -321,6 +342,8 @@ export default function App() {
               />
               ) : screen === "explore" ? (
                 <ExplorePage recordings={exploreRecordings} onBack={() => setScreen("home")} />
+              ): screen === "feed" ? (
+                <ExplorePage recordings={feedRecordings} onBack={() =>setScreen("home")}/>
               ) : (
               <Pressable
                 onPress={() => {setActiveTab(null); setAutoStartRecording(true); setScreen("recording"); }}
@@ -331,17 +354,17 @@ export default function App() {
           </View>
         </View>
       <View style={styles.bottomBar}>
-        <Pressable onPress={() => {setActiveTab(null); setScreen("home");}} style={[ styles.BottomBarbutton, { left: "10%", marginLeft: -22 }]}>
+        <Pressable onPress={() => {setActiveTab(null); setScreen("home");}} style={[ styles.BottomBarbutton, { left: "50%", marginLeft: -22 }]}>
           <Text style={styles.BottomBarbuttonText}>
             🏠
           </Text>
         </Pressable>
-        <Pressable onPress={() => {setActiveTab("help"); setScreen("home"); }} style={[styles.BottomBarbutton, { left: "30%", marginLeft: -22 }]}>
+        <Pressable onPress={() => {setActiveTab("help"); setScreen("home"); }} style={[styles.BottomBarbutton, { left: "10%", marginLeft: -22 }]}>
           <Text style={styles.BottomBarbuttonText}>
             ❓
           </Text>
         </Pressable>
-        <Pressable onPress={loadExplore} style={[styles.BottomBarbutton, { left: "50%", marginLeft: -22 }]}>
+        <Pressable onPress={loadExplore} style={[styles.BottomBarbutton, { left: "30%", marginLeft: -22 }]}>
           <Text style={styles.BottomBarbuttonText}>🔍</Text>
         </Pressable>
         <Pressable onPress={() => {setActiveTab(null); setScreen("followers");}} style={[styles.BottomBarbutton, { left: "70%", marginLeft: -22 }]}>
