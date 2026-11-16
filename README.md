@@ -220,3 +220,5 @@ EXPO_PUBLIC_API_URL=http://<server-ip>:3000
 - [ ] add link to psecific observations
 - [x] cache observations locally
 
+## License
+?
