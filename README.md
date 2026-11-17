@@ -116,6 +116,7 @@ BirdID/
 ## Getting started
 > [!NOTE]
 > This is a small quick guide, follow the full guide in [docs/setup.md](docs/setup.md)
+For more in depth documentation check the [docs](docs) folder
 
 ### BirdNET
 ```bash

@@ -3,8 +3,8 @@ first of all thank you for improving birdid! this document will explain how to c
 
 ## before you start
 1. read the [setup guide](setup.md) and set up the database, backend, BirdNET and the mobile app
-2. read the [architecture overview](architecture.md) to understand how project works
-3. chheck the open issues or todo list before starting something new, so work is not duplicated
+2. read the [api-reference.md](api-reference.md) to understand how project works
+3. check the open issues or todo list before starting something new, so work is not duplicated
 
 ## Project structure
 ```
@@ -20,7 +20,7 @@ BirdID/
 - put screens in `mobile/pages/`, hooks in `mobile/hooks/`, and shared styles in `mobile/styles.js`
 - try to keep the style consistent
 
-### BAckend
+### Backend
 - protected routes must use the `authenticateToken` middleware
 - use a transaction when a change touches more than one table
 
@@ -32,6 +32,7 @@ BirdID/
 ## things not to commit
 - `.env` files like `backend/.env` or `mobile/.env`, they contain passwords and the JWT secret
 - The `backend/upload/` folder with uploaded recordingst
+- The BirdNet folder with the virtual ennvironemnt and outputs
 
-## questiosn
+## questions
 if something in this guide is unclear, open an issue or contact the maintainer

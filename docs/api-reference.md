@@ -1,28 +1,28 @@
 # API Reference
-The BirDID backend is an Express API, the mobile app is its only client, thsi document described the backend
+The BirdID backend is an Express API, the mobile app is its only client, this document describes the backend.
 
 ## Summary
 
 | method | route | uses auth | purpose |
 | --- | --- | --- | --- |
-| P0ST | `/auth/register` | No | Create an account |
+| POST | `/auth/register` | No | Create an account |
 | POST | `/auth/login` | No | Log in and receive a token |
-| POST | `/upload` | Yes | Uplood a recording and identify the birds |
+| POST | `/upload` | Yes | Upload a recording and identify the birds |
 | GET | `/recording/me` | Yes | your own observations |
 | GET | `/recording/explore` | Yes | newest observations from all users |
 | GET | `/recording/feed` | Yes | Newest observations from users you follow |
 | GET | `/stats/me` | Yes | Your statistics |
-| GET | `/users/search` | Yess | Search users by name |
+| GET | `/users/search` | Yes | Search users by name |
 | GET | `/users/following` | Yes | Users you follow |
 | GET | `/users/:userId` | Yes | A users public profile and observations |
-| POST | `/users/:userId/follow` | Yes | folow a user |
+| POST | `/users/:userId/follow` | Yes | follow a user |
 | DELETE | `/users/:userId/follow` | Yes | Unfollow a user |
 | GET | `/app/version` | No | Minimum supported app version |
 
 ## App
 
 ### GET /app/version
-returns the minimum app version the backend supports, doesnt require authenticaatzion so the app can check it ebfore logging in
+returns the minimum app version the backend supports, doesn't require authentication so the app can check it before logging in
 Response `200`: `{"minAppVersion": "1.0.0"}`
 the app compares its own version with this value and shows an error
 
@@ -34,10 +34,10 @@ Request body (JSON):
 | Field | Type | Required | Notes |
 | --- | --- | --- | --- |
 | `username` | string | yes | |
-| `email` | string | yes | mst match a basic email pattern |
+| `email` | string | yes | must match a basic email pattern |
 | `password` | string | yes | at least 8 characters |
 
-respons:
+response:
 - `201`: `{ "message": "user registered", "user": { "id", "username", "email" } }`
 - `400`: a field is missing, the email is invalid, or the password is too short
 - `500`: the user could not be saved (for example, the username or email already exists)
@@ -67,7 +67,7 @@ Uploads a recording, runs BirdNET on it, and saves the recording and its results
 | `audio` | file | yes | recording in m4a format |
 | `latitude` | number | no | sent by the app when location is granted |
 | `longitude` | number | no | sent by the app when location is graanted |
-| `region` | string | mo | if missing the backend does not look it up in this route |
+| `region` | string | no | if missing the backend does not look it up in this route |
 
 Response `200`:
 
