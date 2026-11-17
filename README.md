@@ -18,11 +18,9 @@
 - [Database](#database)
 - [Project structure](#project-structure)
 - [Getting started](#getting-started)
-  - [Prerequisites](#prerequisites)
   - [BirdNET](#birdnet)
   - [Backend](#backend)
   - [Mobile app](#mobile-app)
-  - [Building the APK](#building-the-apk)
 - [Environment variables](#environment-variables)
 - [API endpoints](#api-endpoints)
 - [Roadmap](#roadmap)
@@ -35,7 +33,7 @@ Bird ID is an app that records bird sounds and identifies them using [BirdNET](h
 - Bird identification with confidence scores
 - Region saved with each observation
 - Profile page listing your observations and identified birds
-- Bird ids' link to wikipedia
+- Bird IDs' link to wikipedia
 - Search, follow and unfollow other users
 
 ## Releases
@@ -119,7 +117,6 @@ BirdID/
 > [!NOTE]
 > This is a small quick guide, follow the full guide in [docs/setup.md](docs/setup.md)
 
-
 ### BirdNET
 ```bash
 mkdir -p birdnet
@@ -148,18 +145,6 @@ npx expo start -c
 > [!WARNING]
 > Don't forget to set up the .env
 
-### Building the APK
-```bash
-cd mobile
-npx expo prebuild --clean
-cd android
-./gradlew assembleRelease --no-build-cache
-```
-The APK will be at:
-```text
-mobile/android/app/build/outputs/apk/release/app-release.apk
-```
-
 ## Environment variables
 ### `backend/.env`
 
@@ -185,7 +170,7 @@ EXPO_PUBLIC_API_URL=http://<server-ip>:3000
 | --- | :--: | --- |
 | `/` | ❌ | check |
 | `/auth/register` | ❌ | create account |
-| `/auth/login` | ❌ | login and receive a JWT |
+| `/auth/login` | ❌ | log in and receive a JWT |
 | `/upload` | ✅ | upload recording to run BirdNET |
 | `/recording/me` | ✅ | observations and identifications |
 | `/users/search?q=` | ✅ | search users by username |
@@ -197,10 +182,10 @@ EXPO_PUBLIC_API_URL=http://<server-ip>:3000
 ## Goals:
 1. Users should be able to log in to save their recent sightings
 2. Users should be able to follow other users and see their sightings
-3. users should be able to record their sourroundings and ID birds by their chant
-4. users should be be able to share their identifications
+3. users should be able to record their surroundings and ID birds by their chant
+4. users should be able to share their identifications
 
-## roadmap
+## Roadmap
 
 - [x] microphone recording
 - [x] BirdNET integration
@@ -213,10 +198,14 @@ EXPO_PUBLIC_API_URL=http://<server-ip>:3000
 - [ ] notifications
 - [x] see other peoples profiles
 - [x] view other peoples observations
-- [ ] observation chaching
+- [ ] observation caching
 - [x] API minimum version
-- [ ] add link to psecific observations
+- [ ] add link to specific observations
 - [x] cache observations locally
 
 ## License
-?
+
+This project is licensed under the MIT license see the license doc file.
+
+
+The mobile app was created from the Expo template, check its license in [mobile/LICENSE](mobile/LICENSE).
