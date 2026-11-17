@@ -45,7 +45,7 @@ Current Version: v1.0.0
 ## Tech stack
 Mobile : React Native  
 Backend : NodeJS and Express  
-Database : PostgreSQ  
+Database : PostgreSQL  
 Audio analysis : BirdNET Analyzer  
 
 ## Architecture
@@ -112,14 +112,13 @@ BirdID/
 │   ├── services/   # API BirdNET service
 │   ├── db/         # API DB connection
 │   └── server.js
+├── docs/
 └── birdnet/        # Python virtual environment running birdNET
 ```
 ## Getting started
-### Prerequisites
-- Node.js 20+
-- PostgreSQL 17
-- Python 3 and FFmpeg
-- An Android phone (or emulator)
+> [!NOTE]
+> This is a small quick guide, follow the full guide in [docs/setup.md](docs/setup.md)
+
 
 ### BirdNET
 ```bash
@@ -162,7 +161,6 @@ mobile/android/app/build/outputs/apk/release/app-release.apk
 ```
 
 ## Environment variables
-
 ### `backend/.env`
 
 ```env
@@ -193,8 +191,8 @@ EXPO_PUBLIC_API_URL=http://<server-ip>:3000
 | `/users/search?q=` | ✅ | search users by username |
 | `/users/following` | ✅ | followed users |
 | `/users/:userId` | ✅ | profile and observations |
-| `/users/:userId/follow` | ✅ | follow a user |
-| `/users/:userId/follow` | ✅ | unfollow a user |
+| `/users/:userId/follow` | ✅ | follow and unfollow a user |
+| `/app/version` | ❌ | minimum supported app version |
 
 ## Goals:
 1. Users should be able to log in to save their recent sightings
