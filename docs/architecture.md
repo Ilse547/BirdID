@@ -46,8 +46,10 @@ flowchart LR
 
 ### BirdNET (`/birdnet`)
 
-- BirdNET-Analyzer runs in its own Python 3.11 virtual environment
 - The backend starts it as a separate process for each upload with `--rtype table`
-- The output is a tab-separated file: start, end, common name, scientific name, and confidence
+- the output is a file with these columns: selection, view, channel, begin time, end time, low frequency, high frequencyy, common name, species code, confidence, begin path, file offset
+
+>[!NOTE]
+>The database contains a scientific name collumn, it stores the birdnet species code, for example blutit. will eb adressed at some point.
 
 ## todo

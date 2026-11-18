@@ -24,15 +24,18 @@ BirdID/
 - protected routes must use the `authenticateToken` middleware
 - use a transaction when a change touches more than one table
 
-### documentation
-- when you add or change a route update [api.md](api.md)#
+### Documentation
+- when you add or change a route update [api-reference.md](api-reference.md)
 - when you change the database schema, update [database.md](database.md) and the diagram in the README
 - when you change setup steps, update [setup.md](setup.md)
 
-## things not to commit
+## Do nto commit
 - `.env` files like `backend/.env` or `mobile/.env`, they contain passwords and the JWT secret
 - The `backend/upload/` folder with uploaded recordingst
 - The BirdNet folder with the virtual ennvironemnt and outputs
 
-## questions
+## Questions
 if something in this guide is unclear, open an issue or contact the maintainer
+
+## Security
+The app uses play http, only use it on a trusted network
