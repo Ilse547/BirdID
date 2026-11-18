@@ -7,6 +7,7 @@ const db = require("./db/database");
 const authRoutes = require("./routes/authRoutes");
 const authenticateToken = require("./middleware/authMid");
 const userRoutes = require("./routes/userRoutes");
+const jwt = require("jsonwebtoken");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -71,7 +72,7 @@ app.post("/upload", authenticateToken, upload.single("audio"), async (req, res) 
     client.release();
     client = null;
     console.log("BirdNET finished");
-    res.json({ message: "audio analyzed", results: resultsForApp });
+    res.json({ message: "audio analyzed",recordingId,results: resultsForApp });
   } catch (error) {
     if (client) {
       await client.query("ROLLBACK");
@@ -215,7 +216,110 @@ app.get("/recording/feed", authenticateToken, async (req, res) => {
     res.status(500).json({ error: "cannot to load feed" });
   }
 });
-
+app.get("/stats/me", authenticateToken, async (req, res) => {
+  try {
+    const totals = await db.query(
+      `SELECT COUNT(DISTINCT r.id) AS total_observations, COUNT(DISTINCT ir.common_name) AS unique_birds
+      FROM recordings r
+      LEFT JOIN identification_results ir ON ir.recording_id = r.id
+      WHERE r.user_id = $1`,
+      [req.user.userId]
+    );
+    const topBirds = await db.query(
+      `SELECT common_name, sightings, rank FROM (
+        SELECT ir.common_name, COUNT(*) AS sightings, RANK() OVER (ORDER BY COUNT(*) DESC) AS rank
+        FROM recordings r
+        JOIN identification_results ir ON ir.recording_id = r.id
+        WHERE r.user_id = $1
+        GROUP BY ir.common_name
+      ) ranked
+      WHERE rank <= 5
+      ORDER BY rank, common_name`,
+      [req.user.userId]
+    );
+    res.json({
+      total_observations: Number(totals.rows[0].total_observations),
+      unique_birds: Number(totals.rows[0].unique_birds),
+      top_birds: topBirds.rows.map((row) => ({
+        common_name: row.common_name,
+        sightings: Number(row.sightings),
+        rank: Number(row.rank)
+      }))
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "not able to load statistics" });
+  }
+});
+app.get("/recording/:id", authenticateToken, async (req, res) => {
+  try {
+    const recordingId = Number(req.params.id);
+    if (!Number.isInteger(recordingId)) {
+      return res.status(400).json({ error: "observation not found" });
+    }
+    const result = await db.query(
+      `SELECT r.id,r.created_at, r.region, u.username, ir.common_name,ir.scientific_name, ir.confidence
+      FROM recordings r
+      JOIN users u ON u.id = r.user_id
+      LEFT JOIN identification_results ir ON ir.recording_id = r.id
+      WHERE r.id = $1`,
+      [recordingId]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "observation not found" });
+    }
+    const first = result.rows[0];
+    const recording = {
+      id: first.id,
+      username: first.username,
+      created_at: first.created_at,
+      location: first.region || "location not found",
+      results: []
+    };
+    for (const row of result.rows) {
+      if (row.common_name) {
+        recording.results.push({
+          common_name: row.common_name,
+          scientific_name: row.scientific_name,
+          confidence: row.confidence
+        });
+      }
+    }
+    res.json({ recording });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "not able to load observation" });
+  }
+});
+app.get("/recording/:id/audio", async (req, res) => {
+  try {
+    const token = req.query.token || (req.headers.authorization || "").split(" ")[1];
+    if (!token) {
+      return res.status(401).json({ error: "authentication required" });
+    }
+    try {
+      jwt.verify(token, process.env.JWT_SECRET);
+    } catch {
+      return res.status(403).json({ error: "token is not valid" });
+    }
+    const recordingId = Number(req.params.id);
+    if (!Number.isInteger(recordingId)) {
+      return res.status(400).json({ error: "observation not found" });
+    }
+    const result = await db.query(
+      "SELECT stored_path FROM recordings WHERE id = $1",
+      [recordingId]
+    );
+    if (result.rows.length === 0 || !result.rows[0].stored_path) {
+      return res.status(404).json({ error: "audio not found" });
+    }
+    res.set("Content-Type", "audio/mp4");
+    res.sendFile(path.resolve(result.rows[0].stored_path));
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "not able to load audio" });
+  }
+});
 app.get("/app/version", (req, res) => {
   res.json({ minAppVersion: "1.0.0" });
 });
