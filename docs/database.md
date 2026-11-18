@@ -15,7 +15,6 @@ psql -h localhost -U birdid_user -d birdid -c "INSERT INTO user_follows (followe
 
 The total size is about 3.8GB
 
-## Tables
 ## Indexes
 | Index | Table and column | Supports |
 |---|---|---|
@@ -29,12 +28,13 @@ The total size is about 3.8GB
 
 > Tested performance on `recordings (user_id, created_at DESC)` for `/recording/me` and `/recording/feed` they run in about 1–2 ms with the existing `recordings_user_id_idx` index, adding another index wouldnt improve the performance much
 
+## Tables
 ### users
 | Column | Type |
 |---|---|
 | id | integer |
 | username | text |
-| emaii | text|
+| email | text|
 | password_hash | text |
 | created_at | timestampt |
 
@@ -46,16 +46,16 @@ The total size is about 3.8GB
 | original_name | text|
 | stored_path | text |
 | latitude | double precision |
-| loongitude |double precision |
+| longitude |double precision |
 | region | text |
 | created_at | timestamptz |
 
-### id results
+### identification_results
 | Column | Type |
 |---|---|
 | id | integer |
 | recording_id |
-| common_namee | text |
+| common_name | text |
 | scientific_name | text |
 | confidence |numeric(5,4) |
 | start_seconds | numeric(10,3) |
@@ -67,6 +67,8 @@ The total size is about 3.8GB
 | follower_id | integer |
 | following_id | integer |
 | created_at | timestampt|
+
+
 ```mermaid
 erDiagram
     USERS {
@@ -74,10 +76,11 @@ erDiagram
         text username
         text email
         text password_hash
+        timestamptz created_at
     }
     RECORDINGS {
         int id PK
-        int user_id FK
+        int user_id FK "SET NULL on user delete"
         text original_name
         text stored_path
         double latitude
@@ -90,7 +93,7 @@ erDiagram
         int recording_id FK
         text common_name
         text scientific_name
-        numeric confidence
+        numeric confidence "0 to 1"
         numeric start_seconds
         numeric end_seconds
     }
@@ -100,9 +103,9 @@ erDiagram
         timestamptz created_at
     }
 
-    USERS ||--o{ RECORDINGS : "uploads (one to many)"
+    USERS |o--o{ RECORDINGS : "uploads (zero or one user, zero or many recordings)"
     RECORDINGS ||--o{ IDENTIFICATION_RESULTS : "has (one to many)"
-    USERS ||--o{ USER_FOLLOWS : "follower (many to many)"
-    USERS ||--o{ USER_FOLLOWS : "following (many to many)"
+    USERS ||--o{ USER_FOLLOWS : "follows (as follower)"
+    USERS ||--o{ USER_FOLLOWS : "is followed (as following)"
 ```
 from the readme
