@@ -50,7 +50,7 @@ export default function App() {
   const [exploreRecordings, setExploreRecordings] = useState([]);
   const [stats, setStats] = useState(null);
   const [feedRecordings, setFeedRecordings] = useState([]);
-
+  const [lastRecordingId, setLastRecordingId] = useState(null);
   const handleLogin = async () => {
     try{
       const response = await fetch(`${API_URL}/auth/login`, {
@@ -285,13 +285,12 @@ export default function App() {
     }
   };
   if (!authReady) {
-  return (
-    <SafeAreaView style={styles.container}>
-      <ActivityIndicator size="large" />
-    </SafeAreaView>
-  );
-}
-
+    return (
+      <SafeAreaView style={styles.container}>
+        <ActivityIndicator size="large" />
+      </SafeAreaView>
+    );
+  }
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar hidden/>
@@ -331,13 +330,13 @@ export default function App() {
             ) : screen === "profile" ? (
               <ProfilePage username={profileUsername} recordings={profileRecordings} onBack={() => setScreen("home")} onLogout={handleLogout}stats={stats}/>
             ) : screen === "results" ? (
-              <ResultPage results={birdnetResults} onBack={() => setScreen("recording")} />
+              <ResultPage results={birdnetResults} recordingId={lastRecordingId} onBack={() => setScreen("recording")}/>
             ) : screen === "recording" ? (
               <RecordingPage
                 token={token}
                 autoStart={autoStartRecording}
                 onSessionExpired={handleSessionExpired}
-                onResults={(results) => {setAutoStartRecording(false); setBirdnetResults(results); setScreen("results");}}
+                onResults={(results, recordingId) => {setAutoStartRecording(false); setBirdnetResults(results); setLastRecordingId(recordingId); setScreen("results");}}
                 onBack={() => { setAutoStartRecording(false); setActiveTab(null); setScreen("home");}}
               />
               ) : screen === "explore" ? (

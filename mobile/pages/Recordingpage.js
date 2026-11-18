@@ -99,7 +99,7 @@ const handleUpload = async () => {
     }
     console.log(data);
     setBirdnetResults(data.results);
-    onResults(data.results);
+    onResults(data.results,data.recordingId);
     setUploadMessage("Upload successfuk");
   } catch(uploadError) {
     console.error(uploadError);

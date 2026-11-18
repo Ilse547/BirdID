@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Pressable, Text, View, ScrollView, Linking,Share } from "react-native";
 import styles from "../styles";
+import { API_URL } from "../config";
 
 export default function ObservationsPage({ recordings, onBack }) {
   const [selectedRecording, setSelectedRecording] = useState(null);
@@ -9,7 +10,8 @@ export default function ObservationsPage({ recordings, onBack }) {
     if (!selectedRecording) { return;}
     const lines = selectedRecording.results.map((result) => `${result.common_name} (${(Number(result.confidence) * 100).toFixed(1)}%)`);
     const date = new Date(selectedRecording.created_at).toLocaleDateString("de-DE");
-    const message = `I identified these bird on ${date} in ${selectedRecording.location}:\n${lines.join("\n")}`;
+    const link = selectedRecording.id ? `\n\nListen to the recording: ${API_URL}/observation/${selectedRecording.id}` : "";
+    const message = `I identified these bird on ${date} in ${selectedRecording.location}:\n${lines.join("\n")}${link}`;
     await Share.share({ message });
   };
 

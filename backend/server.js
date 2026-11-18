@@ -251,7 +251,7 @@ app.get("/stats/me", authenticateToken, async (req, res) => {
     res.status(500).json({ error: "not able to load statistics" });
   }
 });
-app.get("/recording/:id", authenticateToken, async (req, res) => {
+app.get("/recording/:id", async (req, res) => {
   try {
     const recordingId = Number(req.params.id);
     if (!Number.isInteger(recordingId)) {
@@ -293,15 +293,6 @@ app.get("/recording/:id", authenticateToken, async (req, res) => {
 });
 app.get("/recording/:id/audio", async (req, res) => {
   try {
-    const token = req.query.token || (req.headers.authorization || "").split(" ")[1];
-    if (!token) {
-      return res.status(401).json({ error: "authentication required" });
-    }
-    try {
-      jwt.verify(token, process.env.JWT_SECRET);
-    } catch {
-      return res.status(403).json({ error: "token is not valid" });
-    }
     const recordingId = Number(req.params.id);
     if (!Number.isInteger(recordingId)) {
       return res.status(400).json({ error: "observation not found" });
@@ -323,6 +314,75 @@ app.get("/recording/:id/audio", async (req, res) => {
 app.get("/app/version", (req, res) => {
   res.json({ minAppVersion: "1.0.0" });
 });
+
+
+app.get("/observation/:id", (req, res) => {
+  const id = Number(req.params.id);
+  if (!Number.isInteger(id)) {
+    return res.status(400).send("Invalid observation id");
+  }
+  res.type("html").send(`
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Bird ID observation</title>
+      <style>
+      body { font-family: sans-serif; margin: 0; padding: 24px; background: #f5f7f5; color: #111; }
+      h1 { font-size: 22px; }
+      .meta { color: #555; margin-bottom: 16px; }
+      .bird { padding: 10px 0; border-bottom: 1px solid #ddd; }
+      .bird a { color: #1a6b3c; font-weight: bold; }
+      audio { width: 100%; margin: 16px 0; }
+      .error { color: #b00020; }
+      </style>
+    </head>
+    <body>
+      <h1>Shared observation</h1>
+      <div id="content">Loading...</div>
+      <script>
+        const id = ${id};
+        const content = document.getElementById("content");
+        const el = (tag, text, className) => {
+          const node = document.createElement(tag);
+          if (text !== undefined) node.textContent = text;
+          if (className) node.className = className;
+          return node;
+        };
+        fetch("/recording/" + id)
+          .then((response) => response.json().then((data) => ({ ok: response.ok, data })))
+          .then(({ ok, data }) => {
+            if (!ok) throw new Error(data.error || "Observation not found");
+            const rec = data.recording;
+            content.textContent = "";
+            content.appendChild(el("div", rec.username + " · " + new Date(rec.created_at).toLocaleDateString("de-DE"), "meta"));
+            content.appendChild(el("div", "📍 " + rec.location, "meta"));
+            rec.results.forEach((result) => {
+              const row = el("div", undefined, "bird");
+              const link = el("a", result.common_name);
+              link.href = "https://en.wikipedia.org/w/index.php?search=" + encodeURIComponent(result.common_name);
+              link.target = "_blank";
+              link.rel = "noopener";
+              row.appendChild(link);
+              row.appendChild(el("span", " " + (Number(result.confidence) * 100).toFixed(1) + "%"));
+              content.appendChild(row);
+            });
+            const audio = document.createElement("audio");
+            audio.controls = true;
+            audio.src = "/recording/" + id + "/audio";
+            content.appendChild(audio);
+          })
+          .catch((error) => {
+            content.textContent = error.message;
+            content.className = "error";
+          });
+      </script>
+    </body>
+  </html>`
+  );
+});
+
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Backend running at http://localhost:${PORT}`);
 });
