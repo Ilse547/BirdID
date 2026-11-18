@@ -1,3 +1,5 @@
+/* This filöe contains all routes for authentication, like the login and registration */
+
 const express = require("express");
 const bcrypt = require("bcrypt");
 const db = require("../db/database");

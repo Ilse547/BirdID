@@ -1,3 +1,5 @@
+/* This file contains all user related routes, like the routes to follow and unfollow, searhc users etc */
+
 const express = require("express");
 const db = require("../db/database");
 const authenticateToken = require("../middleware/authMid");
