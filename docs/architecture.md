@@ -50,6 +50,6 @@ flowchart LR
 - the output is a file with these columns: selection, view, channel, begin time, end time, low frequency, high frequencyy, common name, species code, confidence, begin path, file offset
 
 >[!NOTE]
->The database contains a scientific name collumn, it stores the birdnet species code, for example blutit. will eb adressed at some point.
+>The database contains a scientific name collumn, it stores the birdnet species code, for example blutit. will eb adressed at some point.   
 
 ## todo
