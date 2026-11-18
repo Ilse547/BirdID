@@ -227,7 +227,7 @@ app.get("/stats/me", authenticateToken, async (req, res) => {
     );
     const topBirds = await db.query(
       `SELECT common_name, sightings, rank FROM (
-        SELECT ir.common_name, COUNT(*) AS sightings, RANK() OVER (ORDER BY COUNT(*) DESC) AS rank
+        SELECT ir.common_name, COUNT(DISTINCT ir.recording_id) AS sightings, RANK() OVER (ORDER BY COUNT(DISTINCT ir.recording_id) DESC) AS rank
         FROM recordings r
         JOIN identification_results ir ON ir.recording_id = r.id
         WHERE r.user_id = $1
