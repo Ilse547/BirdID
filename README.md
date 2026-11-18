@@ -20,6 +20,7 @@
 - [Getting started](#getting-started)
   - [BirdNET](#birdnet)
   - [Backend](#backend)
+  - [Database Setup](#database-setup)
   - [Mobile app](#mobile-app)
 - [Environment variables](#environment-variables)
 - [API endpoints](#api-endpoints)
@@ -119,11 +120,7 @@ BirdID/
 For more in depth documentation check the [docs](docs) folder
 
 ### BirdNET
-```bash
-mkdir -p birdnet
-python3 -m venv birdnet/.venv
-birdnet/.venv/bin/python -m pip install birdnet-analyzer
-```
+Follow step 5 of [setup.md](docs/setup.md), clone BirdNET-Analyzer into a Python virtual environment inside `birdnet/`
 ```bash
 birdnet/.venv/bin/python -m birdnet_analyzer.analyze --help
 ```
@@ -136,6 +133,12 @@ node server.js
 ```
 > [!WARNING]
 > Don't forget to set up the .env
+
+## Database setup
+Create the database user and load the schema, check for the full steps [setup.md](docs/setup.md#3-set-up-the-database)
+```bash
+psql -h localhost -U birdid_user -d birdid -f backend/db/schema.sql
+```
 
 ### Mobile app
 ```bash

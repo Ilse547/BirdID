@@ -24,15 +24,29 @@ The project has 3 subfolders
 - `backend/`: the Express API
 - `birdnet/`: the Python environment for BirdNET
 
-## 3. Setup the DB
-1. Install PostgreSQL and create a database user and a database:
+## 3. Setup the database
+1. Create the database user and the database run these as the `postgres` user
+```bash
+   sudo -u postgres psql -c "CREATE USER birdid_user WITH PASSWORD 'your password';"
+   sudo -u postgres psql -c "CREATE DATABASE birdid OWNER birdid_user;"
 ```
-CREATE USER birdid_user WITH PASSWORD 'your-strong-password';
-CREATE DATABASE birdid OWNER birdid_user;
-```
-2. Create the tables `users`, `recordings`, `identification_results` and `user_follows`
 >[!NOTE]
->will soon be finished
+>if you use macOS or Windows run `psql -U postgres` instead.
+
+
+2. Create the tables from the schema file
+>[!IMPORTANT]
+> run this command form the project root folder
+```bash
+   psql -h localhost -U birdid_user -d birdid -f backend/db/schema.sql
+```
+Enter the password you set in step 1. `-h localhost` makes PostgreSQL ask for the password
+
+3. Check that the four tables exist:
+```bash
+   psql -h localhost -U birdid_user -d birdid -c "\dt"
+```
+You should see `identification_results`, `recordings`, `user_follows`, and `users`
 
 ## 4. Configure the backend
 create the .env in the backend root
@@ -70,7 +84,7 @@ cd BirdNET-Analyzer
 1. Find the IP address of your computer on the local network ex: `192.168.1.20`.
     - Linux: run `hostname -I`
     - MacOS: run `ipconfig getifaddr en0`
-    - Windows: idk switch to linux
+    - Windows: run `ipconfig`
 2. Create the file `mobile/.env`:
 ```
 EXPO_PUBLIC_API_URL=http://192.168.1.20:3000
