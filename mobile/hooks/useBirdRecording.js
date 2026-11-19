@@ -29,6 +29,7 @@ export default function useBirdRecording() {
                 return false;
             }
             try{
+                // location is optional, if it is denied, the recording still works and shows "location not found"
                 const locationPermission = await Location.requestForegroundPermissionsAsync();
                 if (locationPermission.granted) {
                     const currentLocation = await Location.getCurrentPositionAsync({

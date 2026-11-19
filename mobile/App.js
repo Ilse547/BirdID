@@ -156,6 +156,10 @@ export default function App() {
       .catch((error) => console.error(error));
   }, [screen, token]);
   useEffect(() => {
+
+    // This restores the login from storage at the startup of the app
+    // It doesnt refresh the token
+
     const restoreLogin = async () => {
       try {
         const savedToken = await AsyncStorage.getItem(TOKEN_KEY);
@@ -178,6 +182,7 @@ export default function App() {
     restoreLogin();
   }, []);
 
+  //Clears all saved data and returns to the login screen if the server rejects the token
   const handleSessionExpired = async () => {
     await AsyncStorage.multiRemove([TOKEN_KEY, USERNAME_KEY,OBSERVATIONS_KEY]);
     setToken(null);
@@ -234,6 +239,8 @@ export default function App() {
       console.error(error);
     }
   };
+
+  // blocks the user with outdated app
   const [versionOk, setVersionOk] = useState(true);
   const [minAppVersion, setMinAppVersion] = useState(null);
   const isVersionOlder = (current, minimum) => {
@@ -291,6 +298,8 @@ export default function App() {
       </SafeAreaView>
     );
   }
+
+  //The headers were hidden from the lgoin pages
   const isLoggedIn = authScreen === null;
   return (
     <SafeAreaView style={styles.container}>
