@@ -22,6 +22,8 @@ if(!fs.existsSync(uploadDirectory)) {
 }
 const upload = multer({ dest: uploadDirectory});
 
+// birdnet runs vbefore the db transaction so the database connection isn't kept open during the analysis
+
 app.post("/upload", authenticateToken, upload.single("audio"), async (req, res) => {
 
   if (!req.file) {
@@ -62,6 +64,10 @@ app.post("/upload", authenticateToken, upload.single("audio"), async (req, res) 
         VALUES ($1, $2, $3, $4, $5, $6)`,
         [ recordingId, result[7], result[8], Number(result[9]), Number(result[3]), Number(result[4]) ]);
     }
+
+      // The indexes had to eb changed for the app as I installed a new version of birdnet which changed the indexes
+      // the database still gets the original values
+
     const resultsForApp = birdnetResults.map((result) => {
       const appResult = [...result];
       appResult[3] = result[7];
@@ -134,6 +140,8 @@ app.get("/recording/me", authenticateToken, async (req, res) => {
     res.status(500).json({ error: "not able to load recoridngs" });
   }
 });
+
+// Limited to the 200 newest recordings to awoid slowing the page
 
 app.get("/recording/explore", authenticateToken, async (req, res) => {
   try {
@@ -216,6 +224,9 @@ app.get("/recording/feed", authenticateToken, async (req, res) => {
     res.status(500).json({ error: "cannot to load feed" });
   }
 });
+
+// COUNT(DISTINCT r.id) is used to count each observation once even if BirdNET detects the same bird multiple times
+// Otherwise the count would be false
 app.get("/stats/me", authenticateToken, async (req, res) => {
   try {
     const totals = await db.query(

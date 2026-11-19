@@ -65,6 +65,7 @@ router.post("/:userId/follow", authenticateToken, async (req, res) => {
     if (userId === req.user.userId) {
       return res.status(400).json({ error: "cannot follow yourself" });
     }
+    // ON CONFLICT DO NOTHING makes following twice do nothing
     await db.query(
       `
       INSERT INTO user_follows (follower_id, following_id)
