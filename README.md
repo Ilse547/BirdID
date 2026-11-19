@@ -63,10 +63,11 @@ erDiagram
         text username
         text email
         text password_hash
+        timestamptz created_at
     }
     RECORDINGS {
         int id PK
-        int user_id FK
+        int user_id FK "SET NULL on user delete"
         text original_name
         text stored_path
         double latitude
@@ -79,7 +80,7 @@ erDiagram
         int recording_id FK
         text common_name
         text scientific_name
-        numeric confidence
+        numeric confidence "0 to 1"
         numeric start_seconds
         numeric end_seconds
     }
@@ -89,10 +90,10 @@ erDiagram
         timestamptz created_at
     }
 
-    USERS ||--o{ RECORDINGS : "uploads (one to many)"
+    USERS |o--o{ RECORDINGS : "uploads (zero or one user, zero or many recordings)"
     RECORDINGS ||--o{ IDENTIFICATION_RESULTS : "has (one to many)"
-    USERS ||--o{ USER_FOLLOWS : "follower (many to many)"
-    USERS ||--o{ USER_FOLLOWS : "following (many to many)"
+    USERS ||--o{ USER_FOLLOWS : "follows (as follower)"
+    USERS ||--o{ USER_FOLLOWS : "is followed (as following)"
 ```
 
 ## Project structure

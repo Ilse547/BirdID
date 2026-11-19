@@ -60,6 +60,10 @@ router.post("/login", async (req, res) => {
     if (!passwordMatches) {
       return res.status(401).json({ error: "No user matching credentials was found" });
     }
+
+    // The token expires after 12 hours, annoying but good for security
+    // still needs refresh token route
+
     const token = jwt.sign(
       { userId: user.id, username: user.username },
       JWT_SECRET,
