@@ -291,12 +291,13 @@ export default function App() {
       </SafeAreaView>
     );
   }
+  const isLoggedIn = authScreen === null;
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar hidden/>
 
     <View style={styles.content}>
-      <View style={styles.header}>
+      {isLoggedIn && (<View style={styles.header}>
 
         <View style={styles.headerLeft}>
           <Image source={require("./assets/icon.png")} style={styles.appIcon}/>
@@ -311,7 +312,7 @@ export default function App() {
       <Pressable onPress={loadFeed} style={({ pressed }) => [styles.Secondarybutton, { marginLeft: 8 }, pressed && styles.SecondarybuttonPressed]}>
         <Text style={styles.SecondarybuttonText}>Feed</Text>
       </Pressable>
-        </View>
+        </View>)}
           <View style={styles.mainContent}>
             {authScreen === "login" ? (
               <LoginPage message={authMessage} onLogin={{setEmail, setPassword, submit: handleLogin }} onRegister={() => setAuthScreen("register")}/>
@@ -352,7 +353,7 @@ export default function App() {
             )}
           </View>
         </View>
-      <View style={styles.bottomBar}>
+      {isLoggedIn && (<View style={styles.bottomBar}>
         <Pressable onPress={() => {setActiveTab(null); setScreen("home");}} style={[ styles.BottomBarbutton, { left: "50%", marginLeft: -22 }]}>
           <Text style={styles.BottomBarbuttonText}>
             🏠
@@ -374,7 +375,7 @@ export default function App() {
         <Pressable onPress={() => {setActiveTab(null); setScreen("profile");}} style={[styles.BottomBarbutton, { left: "90%", marginLeft: -22 }]}>
           <Text style={styles.BottomBarbuttonText}>👤</Text>
         </Pressable>
-      </View>
+      </View>)}
     </SafeAreaView>
   );
 }
