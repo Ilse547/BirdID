@@ -69,6 +69,8 @@ The total size is about 3.8GB
 | created_at | timestampt|
 
 
+## ER diagram
+
 ```mermaid
 erDiagram
     USERS {
